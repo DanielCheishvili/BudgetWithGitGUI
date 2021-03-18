@@ -38,6 +38,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Budget">
+      <HintPath>Dlls\BudgetWithGUIModel\Budget.dll</HintPath>
+    </Reference>
     <Reference Include="BudgetWithGit">
       <HintPath>Dlls\BudgetWithGUIModel\BudgetWithGit.dll</HintPath>
     </Reference>
