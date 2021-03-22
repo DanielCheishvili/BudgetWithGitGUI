@@ -1,0 +1,181 @@
+﻿<Window x:Class="BudgetWithGitGUI.ExpenseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BudgetWithGitGUI"
+        mc:Ignorable="d"
+        Title="ExpenseWindow" Height="450" Width="800">
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+
+        <!--BackGround-->
+        <Border Grid.ColumnSpan="2" Grid.RowSpan="6">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FFC0C4C5" Offset="0.287"/>
+                    <GradientStop Color="#FF575B5D" Offset="0.913"/>
+                    <GradientStop Color="#FFBFC6C9" Offset="0.08"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+
+        <!--Title-->
+        <TextBlock 
+            Text="Add Expense" 
+            FontSize="40"
+            Grid.ColumnSpan="2" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center"
+            TextDecorations="Underline" 
+            FontFamily="SimSun"/>
+        <TextBlock  />
+
+
+        <!--Name-->
+        <TextBlock
+            x:Name="name"
+            Text="Expense Name :"
+            Grid.Row="1"
+            Grid.Column="0"
+            FontSize="17"
+            FontFamily="Tahoma"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            Margin="0,0,12,0"/>
+        <TextBlock/>
+
+        <TextBox
+            Grid.Column="1"
+            Grid.Row="1"
+            Width="200"
+            Height="25"
+            HorizontalAlignment="Left"/>
+
+
+        <!--Description-->
+        <TextBlock
+            x:Name="description"
+            Text="Description :"
+            Grid.Row="2"
+            Grid.Column="0"
+            FontSize="17"
+            FontFamily="Tahoma"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            Margin="0,0,12,0"/>
+        <TextBlock/>
+
+        <TextBox
+            Grid.Column="1"
+            Grid.Row="2"
+            Width="200"
+            Height="25"
+            HorizontalAlignment="Left"/>
+
+
+
+        <!--Amount-->
+        <TextBlock
+            x:Name="amount"
+            Text="Amount :"
+            Grid.Row="3"
+            Grid.Column="0"
+            FontSize="17"
+            FontFamily="Tahoma"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            Margin="0,0,12,0"/>
+        <TextBlock/>
+
+        <TextBox
+            Grid.Column="1"
+            Grid.Row="3"
+            Width="200"
+            Height="25"
+            HorizontalAlignment="Left"/>
+
+        <!--Category-->
+        <TextBlock
+            x:Name="category"
+            Text="Category :"
+            Grid.Row="4"
+            Grid.Column="0"
+            FontSize="17"
+            FontFamily="Tahoma"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            Margin="0,0,12,0"/>
+        <TextBlock/>
+
+        <TextBox
+            Grid.Column="1"
+            Grid.Row="4"
+            Width="200"
+            Height="25"
+            HorizontalAlignment="Left"/>
+
+        <!--Date-->
+        <DatePicker 
+            Grid.Row="1"
+            Grid.Column="2"
+            Height="25" 
+            HorizontalAlignment="Right" 
+            Margin="0,0,50,0" 
+            Name="datePicker1"   
+            VerticalAlignment="Center" 
+            Width="115" />
+
+
+        <!--Submit-->
+        <Button
+            x:Name="Button"
+            MouseDoubleClick="Button_MouseDoubleClick"
+            Grid.Row="5"
+            Grid.Column="1"
+            Width="100"
+            FontFamily="Tohoma"
+            FontSize="17"
+            Height="30" Background="#FFF5EDED" BorderBrush="Black" BorderThickness="2" Content="Save">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+
+
+
+        <Button
+            x:Name="Button2"
+            MouseDoubleClick="Button_MouseDoubleClick"
+            Grid.Row="5"
+            Grid.Column="0"
+            HorizontalAlignment="center"
+            Margin="80,0,0,0"
+            Width="100"
+            FontFamily="Tohoma"
+            FontSize="17"
+            Height="30" Background="#FFF5EDED" BorderBrush="Black" BorderThickness="2" Content="Cancel">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+
+
+
+    </Grid>
+</Window>
