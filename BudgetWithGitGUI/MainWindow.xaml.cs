@@ -28,5 +28,10 @@ namespace BudgetWithGitGUI
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            new CategoryWindow().Show();
+        }
     }
 }
