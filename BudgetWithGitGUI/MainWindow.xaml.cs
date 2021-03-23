@@ -49,6 +49,7 @@ namespace BudgetWithGitGUI
                     return;
                 }
             }
+            SQLiteConnection.CreateFile(locationOfPreviousSave);
             
         }
 
@@ -73,11 +74,14 @@ namespace BudgetWithGitGUI
 
         private void addCategoryBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            CategoryWindow newCatWindow = new CategoryWindow(ref homeBudget);
+            newCatWindow.Show();
         }
 
-        private void categoryDropDown_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void categoryDropDownList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            CategoryWindow categoryWindow = categoryDropDownList.SelectedItem as CategoryWindow;
+
 
         }
     }
