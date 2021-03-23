@@ -23,48 +23,47 @@ namespace BudgetWithGitGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string locationOfPreviousSave;
-        private bool isNewFile = true;
-        HomeBudget homeBudget;
+        //private string locationOfPreviousSave;
+        //private bool isNewFile = true;
+        private HomeBudget _homeBudget;
         public MainWindow()
         {
             InitializeComponent();
-            
-            
-        }
+            addCategory.Visibility = Visibility.Hidden;
+            addExpense.Visibility = Visibility.Hidden;
 
-        private void saveBtn_Click(object sender, RoutedEventArgs e)
+
+        }
+        public HomeBudget homeBudget_
         {
-            SaveFileDialog saveFile = new SaveFileDialog();
-            saveFile.Filter = "DB Files |*.db";
-            if(isNewFile)
+            get
             {
-                if (saveFile.ShowDialog() == true)
-                {
-                    locationOfPreviousSave = saveFile.FileName;
-                    isNewFile = false;
-                }
-                else
-                {
-                    return;
-                }
+                return _homeBudget;
             }
-            SQLiteConnection.CreateFile(locationOfPreviousSave);
-            
+            set
+            {
+                _homeBudget = value; 
+            }
         }
 
+        
         private void openBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
+            openFile.CheckFileExists = false;
+            openFile.CheckPathExists = false;
+            openFile.RestoreDirectory = true;
             openFile.Filter = "DB Files|*.db";
             if(openFile.ShowDialog() == true)
             {
-                homeBudget = new HomeBudget(locationOfPreviousSave, false);
+                _homeBudget = new HomeBudget(openFile.FileName, false);
             }
             else
             {
                 return;
             }
+            addCategory.Visibility = Visibility.Visible;
+            addExpense.Visibility = Visibility.Visible;
         }
 
         private void addExpenseBtn_Click(object sender, RoutedEventArgs e)
@@ -74,14 +73,18 @@ namespace BudgetWithGitGUI
 
         private void addCategoryBtn_Click(object sender, RoutedEventArgs e)
         {
-            CategoryWindow newCatWindow = new CategoryWindow(ref homeBudget);
-            newCatWindow.Show();
+            CategoryWindow newCatWindow = new CategoryWindow();
+            newCatWindow.ShowDialog();
         }
 
         private void categoryDropDownList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             CategoryWindow categoryWindow = categoryDropDownList.SelectedItem as CategoryWindow;
 
+        }
+
+        private void categoryDropDownList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
         }
     }

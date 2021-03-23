@@ -22,7 +22,7 @@ namespace BudgetWithGitGUI
     public partial class CategoryWindow : Window
     {
         HomeBudget homeBudget;
-        public CategoryWindow(ref HomeBudget homeBudget)
+        public CategoryWindow()
         {
             InitializeComponent();
             //this.homeBudget = homeBudget;

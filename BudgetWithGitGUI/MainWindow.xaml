@@ -19,11 +19,14 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Grid.Column="0" Grid.Row="4" Width="150" Height="30" Click="saveBtn_Click">Create New File</Button>
-        <Button Grid.Column="1" Grid.Row="4" Width="150" Height="30" Click="openBtn_Click">Open Existing File</Button>
-        <Button Grid.Column="2" Grid.Row="4" Width="150" Height="30" Click="addExpenseBtn_Click">Add Expense</Button>
-        <Button Grid.Column="3" Grid.Row="4" Width="150" Height="30" Click="addCategoryBtn_Click">Add Category</Button>
-        <ComboBox x:Name="categoryDropDownList" MouseDoubleClick="categoryDropDownList_MouseDoubleClick">
+        
+        <Button x:Name="openBtn" Grid.Column="1" Grid.Row="4" Width="150" Height="30" Click="openBtn_Click">Open Existing File</Button>
+        <Button x:Name="addExpense" Grid.Column="2" Grid.Row="4" Width="150" Height="30" Click="addExpenseBtn_Click">Add Expense</Button>
+        <Button x:Name="addCategory" Grid.Column="3" Grid.Row="4" Width="150" Height="30" Click="addCategoryBtn_Click">Add Category</Button>
+        <ComboBox 
+            x:Name="categoryDropDownList" 
+            MouseDoubleClick="categoryDropDownList_MouseDoubleClick" SelectionChanged="categoryDropDownList_SelectionChanged"
+            >
             
         </ComboBox>
     </Grid>
