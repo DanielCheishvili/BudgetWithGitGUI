@@ -30,6 +30,7 @@ namespace BudgetWithGitGUI
         {
             InitializeComponent();
             
+            
         }
 
         private void saveBtn_Click(object sender, RoutedEventArgs e)
@@ -71,6 +72,11 @@ namespace BudgetWithGitGUI
         }
 
         private void addCategoryBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void categoryDropDown_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
         }
