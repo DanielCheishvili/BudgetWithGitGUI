@@ -22,6 +22,7 @@ namespace BudgetWithGitGUI
         public ExpenseWindow(ref Budget.HomeBudget homeBudget)
         {
             InitializeComponent();
+            datePicker1.SelectedDate = DateTime.Today;
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
@@ -51,9 +52,18 @@ namespace BudgetWithGitGUI
             }
             else
             {
-                MessageBox.Show("Do you want to Add this data?", "Home Budget", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                
+                MessageBox.Show("Would you like to add this data", "Home Budget", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             }
             
+        }
+
+        private void amountText_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                amountText.Text = double.Parse(amountText.Text).ToString("c");
+            }
         }
     }
 }
