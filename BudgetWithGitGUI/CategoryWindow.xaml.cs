@@ -21,7 +21,6 @@ namespace BudgetWithGitGUI
     /// </summary>
     public partial class CategoryWindow : Window
     {
-        HomeBudget homeBudget;
         public CategoryWindow()
         {
             InitializeComponent();
@@ -37,9 +36,15 @@ namespace BudgetWithGitGUI
             }
             else
             {
-                homeBudget.categories.Add(DescriptionBox.Text, (Category.CategoryType)TypeBox.SelectedIndex);
-                MessageBox.Show($"Description: {DescriptionBox.Text}, Type: {(Category.CategoryType)TypeBox.SelectedItem}");
-                Close();
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window.GetType() == typeof(MainWindow))
+                    {
+                        (window as MainWindow).homeBudget_.categories.Add(DescriptionBox.Text, (Category.CategoryType)TypeBox.SelectedIndex + 1);
+                        MessageBox.Show($"Description: {DescriptionBox.Text}, Type: {(Category.CategoryType)TypeBox.SelectedItem}");
+                        Close();
+                    }
+                }
             }
         }
 

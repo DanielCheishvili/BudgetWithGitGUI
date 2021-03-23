@@ -24,10 +24,7 @@
         <Button x:Name="addExpense" Grid.Column="2" Grid.Row="4" Width="150" Height="30" Click="addExpenseBtn_Click">Add Expense</Button>
         <Button x:Name="addCategory" Grid.Column="3" Grid.Row="4" Width="150" Height="30" Click="addCategoryBtn_Click">Add Category</Button>
         <ComboBox 
-            x:Name="categoryDropDownList" 
-            MouseDoubleClick="categoryDropDownList_MouseDoubleClick" SelectionChanged="categoryDropDownList_SelectionChanged"
-            >
-            
+            x:Name="categoryDropDownList">
         </ComboBox>
     </Grid>
     

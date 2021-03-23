@@ -57,6 +57,10 @@ namespace BudgetWithGitGUI
             if(openFile.ShowDialog() == true)
             {
                 _homeBudget = new HomeBudget(openFile.FileName, false);
+                //Adds category type as well.
+                //Before updating the category reset it to null.
+                categoryDropDownList.ItemsSource = _homeBudget.categories.List();
+
             }
             else
             {
@@ -75,17 +79,6 @@ namespace BudgetWithGitGUI
         {
             CategoryWindow newCatWindow = new CategoryWindow();
             newCatWindow.ShowDialog();
-        }
-
-        private void categoryDropDownList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            CategoryWindow categoryWindow = categoryDropDownList.SelectedItem as CategoryWindow;
-
-        }
-
-        private void categoryDropDownList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }
