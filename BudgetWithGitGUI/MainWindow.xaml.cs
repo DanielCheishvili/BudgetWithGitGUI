@@ -67,12 +67,14 @@ namespace BudgetWithGitGUI
 
         private void addExpenseBtn_Click(object sender, RoutedEventArgs e)
         {
+            ExpenseWindow newExpWindow = new ExpenseWindow(ref homeBudget);
+            newExpWindow.Show();
 
         }
 
         private void addCategoryBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
     }
 }
