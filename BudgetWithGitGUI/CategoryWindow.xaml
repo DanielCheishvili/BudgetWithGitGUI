@@ -32,19 +32,6 @@
                 VerticalAlignment="Bottom"
                 FontSize="30"/>
 
-            <!--Name-->
-            <!--<TextBlock 
-                Text="Name:"
-                Grid.Row="1" 
-                Grid.Column="0" 
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Height="30"/>
-            <TextBox 
-                Grid.Row="1" 
-                Grid.Column="1"
-                Height="30"/>-->
-            
             <!--Description-->
             <TextBlock 
                 Text="Description:"

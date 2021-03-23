@@ -25,11 +25,23 @@ namespace BudgetWithGitGUI
     {
         private string locationOfPreviousSave;
         private bool isNewFile = true;
-        HomeBudget homeBudget;
+        private HomeBudget _homeBudget;
+        
         public MainWindow()
         {
             InitializeComponent();
-            
+        }
+
+        public HomeBudget homeBudget_
+        {
+            get
+            {
+                return _homeBudget;
+            }
+            set
+            {
+                _homeBudget = value;
+            }
         }
 
         private void saveBtn_Click(object sender, RoutedEventArgs e)
@@ -57,7 +69,7 @@ namespace BudgetWithGitGUI
             openFile.Filter = "DB Files|*.db";
             if(openFile.ShowDialog() == true)
             {
-                homeBudget = new HomeBudget(locationOfPreviousSave, false);
+                _homeBudget = new HomeBudget(locationOfPreviousSave, false);
             }
             else
             {
@@ -67,17 +79,14 @@ namespace BudgetWithGitGUI
 
         private void addExpenseBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void addCategoryBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            CategoryWindow newCatWindow = new CategoryWindow();
+            newCatWindow.ShowDialog();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            new CategoryWindow().Show();
-        }
     }
 }
