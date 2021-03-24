@@ -57,9 +57,9 @@ namespace BudgetWithGitGUI
             if(openFile.ShowDialog() == true)
             {
                 _homeBudget = new HomeBudget(openFile.FileName, false);
-                //Adds category type as well.
-                //Before updating the category reset it to null.
+            
                 categoryDropDownList.ItemsSource = _homeBudget.categories.List();
+                expenseDropDownList.ItemsSource = _homeBudget.expenses.List();
 
             }
             else
@@ -72,8 +72,10 @@ namespace BudgetWithGitGUI
 
         private void addExpenseBtn_Click(object sender, RoutedEventArgs e)
         {
-            ExpenseWindow newExpWindow = new ExpenseWindow(ref homeBudget);
-            newExpWindow.Show();
+            ExpenseWindow newExpWindow = new ExpenseWindow();
+            newExpWindow.ShowDialog();
+            expenseDropDownList.ItemsSource = null;
+            expenseDropDownList.ItemsSource = _homeBudget.expenses.List();
 
         }
 
@@ -82,6 +84,14 @@ namespace BudgetWithGitGUI
 
             CategoryWindow newCatWindow = new CategoryWindow();
             newCatWindow.ShowDialog();
+            categoryDropDownList.ItemsSource = null;
+            categoryDropDownList.ItemsSource = _homeBudget.categories.List();
         }
+        private void ResetExpenseList()
+        {
+            
+        }
+
+        
     }
 }

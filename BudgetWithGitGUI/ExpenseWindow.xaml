@@ -107,8 +107,8 @@
             Margin="0,0,12,0"/>
         <TextBlock/>
 
-        <TextBox
-            x:Name="categoryText"
+        <ComboBox
+            x:Name="categoryList"
             Grid.Column="1"
             Grid.Row="3"
             Width="200"
