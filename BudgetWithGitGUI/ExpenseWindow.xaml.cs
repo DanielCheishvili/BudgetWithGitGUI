@@ -14,6 +14,9 @@ namespace BudgetWithGitGUI
         {
             InitializeComponent();
             datePicker1.SelectedDate = DateTime.Today;
+            descriptionText.Text = "";
+            amountText.Text = "";
+
             foreach (Window window in Application.Current.Windows)
             {
                 if (window.GetType() == typeof(MainWindow))
@@ -56,12 +59,22 @@ namespace BudgetWithGitGUI
             else
             {
 
-                MessageBox.Show("Would you like to add this data", "Home Budget", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-
-
-                parent.homeBudget_.expenses.Add(Convert.ToDateTime(datePicker1.SelectedDate), categoryList.SelectedIndex + 1, Convert.ToDouble(amountText.Text), descriptionText.Text);
-                Close();
-
+                MessageBoxResult result = MessageBox.Show($@"You are adding the following Expense:
+                                Description: {descriptionText.Text}
+                                Amount: {amountText.Text}
+                                Category: {categoryList.SelectedItem}
+                                Date: {datePicker1.SelectedDate}", 
+                    "Home Budget", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                
+                //User Story????
+                if(result == MessageBoxResult.Yes)
+                {
+                    parent.homeBudget_.expenses.Add(Convert.ToDateTime(datePicker1.SelectedDate), categoryList.SelectedIndex + 1, Convert.ToDouble(amountText.Text), descriptionText.Text);
+                }
+                else
+                {
+                    return;
+                }
             }
 
         }

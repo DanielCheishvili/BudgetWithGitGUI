@@ -31,8 +31,6 @@ namespace BudgetWithGitGUI
             InitializeComponent();
             addCategory.Visibility = Visibility.Hidden;
             addExpense.Visibility = Visibility.Hidden;
-
-
         }
         public HomeBudget homeBudget_
         {
@@ -75,7 +73,7 @@ namespace BudgetWithGitGUI
             ExpenseWindow newExpWindow = new ExpenseWindow();
             newExpWindow.ShowDialog();
             expenseDropDownList.ItemsSource = null;
-            expenseDropDownList.ItemsSource = _homeBudget.expenses.List();
+            ResetExpenseList();
 
         }
 
@@ -89,9 +87,14 @@ namespace BudgetWithGitGUI
         }
         private void ResetExpenseList()
         {
-            
+            expenseDropDownList.Items.Clear();
+            foreach (Expense expense in _homeBudget.expenses.List())
+            {
+                
+                expenseDropDownList.Items.Add(expense.Description);
+            }
         }
 
-        
+
     }
 }

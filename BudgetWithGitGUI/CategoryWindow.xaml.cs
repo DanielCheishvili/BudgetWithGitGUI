@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Budget;
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Budget;
-using System.Data.SQLite;
 
 namespace BudgetWithGitGUI
 {
@@ -21,31 +9,46 @@ namespace BudgetWithGitGUI
     /// </summary>
     public partial class CategoryWindow : Window
     {
+        private MainWindow parent;
         public CategoryWindow()
         {
             InitializeComponent();
             //this.homeBudget = homeBudget;
-            TypeBox.ItemsSource = Enum.GetValues(typeof (Category.CategoryType));
+            TypeBox.ItemsSource = Enum.GetValues(typeof(Category.CategoryType));
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window.GetType() == typeof(MainWindow))
+                {
+                    parent = window as MainWindow;
+
+                }
+            }
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
+            
             if (DescriptionBox.Text == "" || TypeBox.SelectedIndex == -1)
             {
                 MessageBox.Show("One or more fields are empty");
-            }
+            }        
             else
             {
-                foreach (Window window in Application.Current.Windows)
+                foreach (Category cat in parent.homeBudget_.categories.List())
                 {
-                    if (window.GetType() == typeof(MainWindow))
+                    if (DescriptionBox.Text == cat.Description)
                     {
-                        (window as MainWindow).homeBudget_.categories.Add(DescriptionBox.Text, (Category.CategoryType)TypeBox.SelectedIndex + 1);
-                        MessageBox.Show($"Description: {DescriptionBox.Text}, Type: {(Category.CategoryType)TypeBox.SelectedItem}");
-                        Close();
+                        MessageBox.Show("The category you are trying to add already exists.");
+                        return;
                     }
+                   
                 }
+                parent.homeBudget_.categories.Add(DescriptionBox.Text, (Category.CategoryType)TypeBox.SelectedIndex + 1);
+                MessageBox.Show($"Description: {DescriptionBox.Text}, Type: {(Category.CategoryType)TypeBox.SelectedItem}");
+
+
             }
+           
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
