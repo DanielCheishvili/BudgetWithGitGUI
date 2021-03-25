@@ -5,11 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BudgetWithGitGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        >
     <Grid>
-        
-        
-        
+             
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -83,6 +82,16 @@
             >
             Add Category
         </Button>
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   x:Name="fileName"
+                   Grid.ColumnSpan="4"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Bottom"
+                   Text="Using File:"
+                   FontSize="20">
+            
+        </TextBlock>
         <ComboBox 
             Grid.Row="1"
             Grid.Column="2"
@@ -91,7 +100,8 @@
             Width="150"
             Height="150"
             x:Name="categoryDropDownList"
-            IsEditable="True">
+            IsEditable="True"
+            MouseDoubleClick="categoryDropDownList_MouseDoubleClick">
         </ComboBox>
         <ComboBox 
             Grid.Row="1"
@@ -101,7 +111,8 @@
             Width="150"
             Height="150"
             x:Name="expenseDropDownList"
-            IsEditable="True">
+            IsEditable="True" 
+            MouseDoubleClick="expenseDropDownList_MouseDoubleClick">
         </ComboBox>
     </Grid>
 

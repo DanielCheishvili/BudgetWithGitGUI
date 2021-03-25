@@ -1,20 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Budget;
+using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Budget;
-using System.Data.SQLite;
-using Microsoft.Win32;
 
 namespace BudgetWithGitGUI
 {
@@ -32,7 +20,8 @@ namespace BudgetWithGitGUI
             addCategory.Visibility = Visibility.Hidden;
             addExpense.Visibility = Visibility.Hidden;
             categoryDropDownList.Visibility = Visibility.Hidden;
-            expenseDropDownList.Visibility = Visibility.Hidden; 
+            expenseDropDownList.Visibility = Visibility.Hidden;
+            fileName.Visibility = Visibility.Hidden;
         }
         public HomeBudget homeBudget_
         {
@@ -42,11 +31,11 @@ namespace BudgetWithGitGUI
             }
             set
             {
-                _homeBudget = value; 
+                _homeBudget = value;
             }
         }
 
-        
+
         private void openBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
@@ -54,12 +43,12 @@ namespace BudgetWithGitGUI
             openFile.CheckPathExists = false;
             openFile.RestoreDirectory = true;
             openFile.Filter = "DB Files|*.db";
-            if(openFile.ShowDialog() == true)
-            {
+            if (openFile.ShowDialog() == true)
+            {                
                 _homeBudget = new HomeBudget(openFile.FileName, false);
-            
+                fileName.Text = "Using File: " + openFile.SafeFileName;
                 categoryDropDownList.ItemsSource = _homeBudget.categories.List();
-                //expenseDropDownList.ItemsSource = _homeBudget.expenses.List();
+                ResetExpenseList();
 
             }
             else
@@ -70,9 +59,9 @@ namespace BudgetWithGitGUI
             addExpense.Visibility = Visibility.Visible;
             categoryDropDownList.Visibility = Visibility.Visible;
             expenseDropDownList.Visibility = Visibility.Visible;
-
+            fileName.Visibility = Visibility.Visible;
             openBtn.Visibility = Visibility.Hidden;
-            
+
         }
 
         private void addExpenseBtn_Click(object sender, RoutedEventArgs e)
@@ -101,6 +90,57 @@ namespace BudgetWithGitGUI
             }
         }
 
-        
+        private void expenseDropDownList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+            ComboBox cmb = sender as ComboBox;
+            if (cmb.SelectedItem != null)
+            {
+                foreach (Expense expense in _homeBudget.expenses.List())
+                {
+
+                    if (cmb.SelectedItem.ToString() == expense.Description)
+                    {
+
+                        MessageBox.Show($"Expense Description: {expense.Description}\n" +
+                                           $"Amount: {expense.Amount}\n" +
+                                           $"Category Type: {homeBudget_.categories.GetCategoryFromId(expense.Category)}\n" +
+                                           $"Date: {expense.Date.ToString("yyyy-MM-dd")}");
+                    }
+
+
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select an item from the drop down list before double clicking", "Expense Drop down list", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            
+
+        }
+
+        private void categoryDropDownList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ComboBox cmb = sender as ComboBox;
+            if (cmb.SelectedItem != null)
+            {
+                foreach (Category category in _homeBudget.categories.List())
+                {
+                    if (cmb.SelectedItem.ToString() == category.Description)
+                    {
+                        MessageBox.Show($"Category Description: {category.Description}\n" +
+                                           $"Type: {category.Type}");
+                    }
+
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select an item from the drop down list before double clicking", "Category Drop down list", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            
+        }
     }
 }

@@ -90,7 +90,6 @@
 
         <TextBox
             x:Name="amountText"
-            KeyDown="amountText_KeyDown"
             Grid.Column="1"
             Grid.Row="2"
             FontSize="20"

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using Budget;
 
 namespace BudgetWithGitGUI
 {
@@ -33,7 +34,15 @@ namespace BudgetWithGitGUI
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Are you sure you want to cancel ?", "Home Budget", MessageBoxButton.YesNoCancel, MessageBoxImage.Exclamation);
+            MessageBoxResult results = MessageBox.Show("Are you sure you want to cancel ?", "Home Budget", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if(MessageBoxResult.Yes == results)
+            {
+                Close();
+            }
+            else
+            {
+                return;
+            }
 
         }
 
@@ -43,28 +52,29 @@ namespace BudgetWithGitGUI
             //Add Receipt , summarize form
             if (descriptionText.Text == "")
             {
-                MessageBox.Show("Please fill in all the fields", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("The Description Text is missing ", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else if (amountText.Text == "")
+            else if (amountText.Text == "" || !double.TryParse(amountText.Text, out double amount))
             {
-                MessageBox.Show("Please fill in all the fields", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("The amount is missing or it is not a number", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else if (categoryList.Text == "")
             {
-                MessageBox.Show("Please fill in all the fields", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("The category type is missing", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else if (datePicker1.SelectedDate == null)
             {
-                MessageBox.Show("Please fill in all the fields", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("The date is missing", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else
             {
-
+                //string date = datePicker1.SelectedDate.ToString('yyyy-MM-dd');
+                DateTime datetime = datePicker1.SelectedDate ?? DateTime.Now;
                 MessageBoxResult result = MessageBox.Show($@"You are adding the following Expense:
                                 Description: {descriptionText.Text}
                                 Amount: {amountText.Text}
                                 Category: {categoryList.SelectedItem}
-                                Date: {datePicker1.SelectedDate}", 
+                                Date: {datetime.ToString("yyyy-MM-dd")}", 
                     "Home Budget", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
                 
                 //User Story????
@@ -81,14 +91,6 @@ namespace BudgetWithGitGUI
                 }
             }
 
-        }
-
-        private void amountText_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                amountText.Text = double.Parse(amountText.Text).ToString("c");
-            }
         }
     }
 }
