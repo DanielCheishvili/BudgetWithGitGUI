@@ -39,6 +39,7 @@ namespace BudgetWithGitGUI
 
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
+            
             //Add Receipt , summarize form
             if (descriptionText.Text == "")
             {
@@ -70,6 +71,9 @@ namespace BudgetWithGitGUI
                 if(result == MessageBoxResult.Yes)
                 {
                     parent.homeBudget_.expenses.Add(Convert.ToDateTime(datePicker1.SelectedDate), categoryList.SelectedIndex + 1, Convert.ToDouble(amountText.Text), descriptionText.Text);
+                    descriptionText.Text = "";
+                    amountText.Text = "";
+                   
                 }
                 else
                 {

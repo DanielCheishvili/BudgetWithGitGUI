@@ -37,13 +37,15 @@
 
         <!--Title-->
         <TextBlock 
-            Text="Add Expense" 
-            FontSize="40"
+            Text="Add Expense"           
             Grid.ColumnSpan="2" 
             HorizontalAlignment="Center" 
-            VerticalAlignment="Center"
-            TextDecorations="Underline" 
-            FontFamily="SimSun"/>
+            VerticalAlignment="Center" 
+            FontSize="30"
+            FontWeight="Bold"
+            FontStyle="Italic"
+            TextDecorations="underline"
+            />
         <TextBlock  />
 
 
@@ -52,12 +54,13 @@
             x:Name="description"
             Text="Description :"
             Grid.Row="1"
-            Grid.Column="0"
-            FontSize="17"
+            Grid.Column="0"         
             FontFamily="Tahoma"
+            HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            HorizontalAlignment="Right"
-            Margin="0,0,12,0"/>
+            FontSize="20"
+            FontWeight="Bold"
+            Height="30"/>
         <TextBlock/>
 
         <TextBox
@@ -66,7 +69,8 @@
             Grid.Row="1"
             Width="200"
             Height="25"
-            HorizontalAlignment="Left"/>
+            HorizontalAlignment="Left"
+            FontSize="20"/>
 
 
 
@@ -76,11 +80,12 @@
             Text="Amount :"
             Grid.Row="2"
             Grid.Column="0"
-            FontSize="17"
             FontFamily="Tahoma"
+            HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            HorizontalAlignment="Right"
-            Margin="0,0,12,0"/>
+            FontSize="20"
+            FontWeight="Bold"
+            Height="30"/>
         <TextBlock/>
 
         <TextBox
@@ -88,10 +93,12 @@
             KeyDown="amountText_KeyDown"
             Grid.Column="1"
             Grid.Row="2"
-            FontSize="15"
+            FontSize="20"
             Width="170"
             Height="28"
-            HorizontalAlignment="Right" Margin="0,21,226,21"/>
+            HorizontalAlignment="Right" 
+            Margin="0,21,226,21"
+            />
 
 
         <!--Category-->
@@ -100,11 +107,12 @@
             Text="Category :"
             Grid.Row="3"
             Grid.Column="0"
-            FontSize="17"
             FontFamily="Tahoma"
+            HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            HorizontalAlignment="Right"
-            Margin="0,0,12,0"/>
+            FontSize="20"
+            FontWeight="Bold"
+            Height="30"/>
         <TextBlock/>
 
         <ComboBox
@@ -115,16 +123,27 @@
             Height="25"
             HorizontalAlignment="Left"/>
 
+        <TextBlock
+            x:Name="datePicker"
+            Text="Date :"
+            Grid.Row="4"
+            Grid.Column="0"
+            FontFamily="Tahoma"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="20"
+            FontWeight="Bold"
+            Height="30"/>
+        <TextBlock/>
         <!--Date-->
         <DatePicker 
             x:Name="datePicker1"  
             Grid.Row="4"
-            Grid.ColumnSpan="2"
-            Height="25" 
-            HorizontalAlignment="Center" 
-            Margin="20,0,0,0"  
+            Grid.Column="1"
+            Height="30" 
             VerticalAlignment="Center" 
-            Width="115" />
+            Width="200" 
+            Margin="0,20,196,20" />
 
 
         <!--Submit-->
@@ -136,7 +155,12 @@
             Width="100"
             FontFamily="Tohoma"
             FontSize="17"
-            Height="30" Background="#FFF5EDED" BorderBrush="Black" BorderThickness="2" Content="Add">
+            Height="30" 
+            Background="#FFF5EDED" 
+            BorderBrush="Black" 
+            BorderThickness="2" 
+           FontWeight="Bold"
+            Content="Add">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
@@ -150,9 +174,9 @@
             Grid.Row="5"
             Grid.Column="0"
             HorizontalAlignment="center"
-            Margin="80,0,0,0"
             Width="100"
             FontFamily="Tohoma"
+            FontWeight="Bold"
             FontSize="17"
             Height="30" Background="#FFF5EDED" BorderBrush="Black" BorderThickness="2" Content="Cancel">
             <Button.Effect>
