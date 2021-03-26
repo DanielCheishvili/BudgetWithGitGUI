@@ -5,13 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BudgetWithGitGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        >
     <Grid>
+             
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -19,13 +21,99 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        
-        <Button x:Name="openBtn" Grid.Column="1" Grid.Row="4" Width="150" Height="30" Click="openBtn_Click">Open Existing File</Button>
-        <Button x:Name="addExpense" Grid.Column="2" Grid.Row="4" Width="150" Height="30" Click="addExpenseBtn_Click">Add Expense</Button>
-        <Button x:Name="addCategory" Grid.Column="3" Grid.Row="4" Width="150" Height="30" Click="addCategoryBtn_Click">Add Category</Button>
+        <!--BackGround-->
+        <Border Grid.ColumnSpan="4" Grid.RowSpan="4">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FFC0C4C5" Offset="0.287"/>
+                    <GradientStop Color="#FF575B5D" Offset="0.913"/>
+                    <GradientStop Color="#FFBFC6C9" Offset="0.08"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+        <TextBlock 
+            Grid.Row="0"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="50">
+            Home Budget
+        </TextBlock>
+        <Button 
+            x:Name="openBtn" 
+            Grid.Column="1" 
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Grid.RowSpan="2"
+            Width="220" 
+            Height="80" 
+            FontSize="25"
+            FontWeight="Bold"
+            Click="openBtn_Click" >
+            Open Existing File
+        </Button>
+        <Button 
+            x:Name="addExpense" 
+            Grid.Column="0" 
+            Grid.Row="3"
+            Grid.ColumnSpan="2"
+            Width="160" 
+            Height="40" 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Click="addExpenseBtn_Click" 
+            FontSize="25"
+            FontWeight="Bold"
+            >
+            Add Expense
+        </Button>
+        <Button 
+            x:Name="addCategory" 
+            Grid.Column="2" 
+            Grid.Row="3" 
+            Grid.ColumnSpan="2"
+            Width="170" 
+            Height="40" 
+            Click="addCategoryBtn_Click"
+            FontSize="25"
+            FontWeight="Bold"
+            
+            >
+            Add Category
+        </Button>
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   x:Name="fileName"
+                   Grid.ColumnSpan="4"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Bottom"
+                   Text="Using File:"
+                   FontSize="20">
+            
+        </TextBlock>
         <ComboBox 
-            x:Name="categoryDropDownList">
+            Grid.Row="1"
+            Grid.Column="2"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            Width="150"
+            Height="150"
+            x:Name="categoryDropDownList"
+            IsEditable="True"
+            MouseDoubleClick="categoryDropDownList_MouseDoubleClick">
+        </ComboBox>
+        <ComboBox 
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            Width="150"
+            Height="150"
+            x:Name="expenseDropDownList"
+            IsEditable="True" 
+            MouseDoubleClick="expenseDropDownList_MouseDoubleClick">
         </ComboBox>
     </Grid>
-    
+
 </Window>

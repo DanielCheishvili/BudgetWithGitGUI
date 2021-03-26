@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Budget;
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Budget;
-using System.Data.SQLite;
 
 namespace BudgetWithGitGUI
 {
@@ -21,36 +9,77 @@ namespace BudgetWithGitGUI
     /// </summary>
     public partial class CategoryWindow : Window
     {
+        private MainWindow parent;
         public CategoryWindow()
         {
             InitializeComponent();
-            //this.homeBudget = homeBudget;
-            TypeBox.ItemsSource = Enum.GetValues(typeof (Category.CategoryType));
-        }
+            
 
-        private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (DescriptionBox.Text == "" || TypeBox.SelectedIndex == -1)
+            TypeBox.ItemsSource = Enum.GetValues(typeof(Category.CategoryType));
+            foreach (Window window in Application.Current.Windows)
             {
-                MessageBox.Show("One or more fields are empty");
-            }
-            else
-            {
-                foreach (Window window in Application.Current.Windows)
+                if (window.GetType() == typeof(MainWindow))
                 {
-                    if (window.GetType() == typeof(MainWindow))
-                    {
-                        (window as MainWindow).homeBudget_.categories.Add(DescriptionBox.Text, (Category.CategoryType)TypeBox.SelectedIndex + 1);
-                        MessageBox.Show($"Description: {DescriptionBox.Text}, Type: {(Category.CategoryType)TypeBox.SelectedItem}");
-                        Close();
-                    }
+                    parent = window as MainWindow;
+
                 }
             }
         }
 
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+            if (DescriptionBox.Text == "" || TypeBox.SelectedIndex == -1)
+            {
+                MessageBox.Show("One or more fields are empty");
+            }        
+            else
+            {
+                //checks if a category with the same description exists.
+                foreach (Category cat in parent.homeBudget_.categories.List())
+                {
+                    if (DescriptionBox.Text == cat.Description)
+                    {
+                        MessageBox.Show("The category you are trying to add already exists.");
+                        return;
+                    }
+                   
+                }
+                
+                MessageBoxResult results = MessageBox.Show($"You are adding the following category:\n" +
+                    $"Description: {DescriptionBox.Text}\n" +
+                    $"Type: {(Category.CategoryType)TypeBox.SelectedItem}\n" +
+                    $"do you wish the proceed?", "Category", MessageBoxButton.YesNo, MessageBoxImage.Information);
+
+                if(MessageBoxResult.Yes == results)
+                {
+                   
+                    parent.homeBudget_.categories.Add(DescriptionBox.Text, (Category.CategoryType)TypeBox.SelectedIndex + 1);
+                }
+                else
+                {
+                    return;
+                }
+
+            }
+            DescriptionBox.Text = "";
+            TypeBox.SelectedIndex = -1;
+           
+        }
+
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            MessageBoxResult results = MessageBox.Show("Do you wish to cancel this operation?", "Category", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if(results == MessageBoxResult.Yes)
+            {
+                Close();
+            }
+            else
+            {
+                return;
+            }
+
+            
         }
     }
 }
