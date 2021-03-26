@@ -13,7 +13,8 @@ namespace BudgetWithGitGUI
         public CategoryWindow()
         {
             InitializeComponent();
-            //this.homeBudget = homeBudget;
+            
+
             TypeBox.ItemsSource = Enum.GetValues(typeof(Category.CategoryType));
             foreach (Window window in Application.Current.Windows)
             {
@@ -34,6 +35,7 @@ namespace BudgetWithGitGUI
             }        
             else
             {
+                //checks if a category with the same description exists.
                 foreach (Category cat in parent.homeBudget_.categories.List())
                 {
                     if (DescriptionBox.Text == cat.Description)
@@ -43,17 +45,41 @@ namespace BudgetWithGitGUI
                     }
                    
                 }
-                parent.homeBudget_.categories.Add(DescriptionBox.Text, (Category.CategoryType)TypeBox.SelectedIndex + 1);
-                MessageBox.Show($"Description: {DescriptionBox.Text}, Type: {(Category.CategoryType)TypeBox.SelectedItem}");
+                
+                MessageBoxResult results = MessageBox.Show($"You are adding the following category:\n" +
+                    $"Description: {DescriptionBox.Text}\n" +
+                    $"Type: {(Category.CategoryType)TypeBox.SelectedItem}\n" +
+                    $"do you wish the proceed?", "Category", MessageBoxButton.YesNo, MessageBoxImage.Information);
 
+                if(MessageBoxResult.Yes == results)
+                {
+                   
+                    parent.homeBudget_.categories.Add(DescriptionBox.Text, (Category.CategoryType)TypeBox.SelectedIndex + 1);
+                }
+                else
+                {
+                    return;
+                }
 
             }
+            DescriptionBox.Text = "";
+            TypeBox.SelectedIndex = -1;
            
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            MessageBoxResult results = MessageBox.Show("Do you wish to cancel this operation?", "Category", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if(results == MessageBoxResult.Yes)
+            {
+                Close();
+            }
+            else
+            {
+                return;
+            }
+
+            
         }
     }
 }

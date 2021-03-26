@@ -18,14 +18,13 @@ namespace BudgetWithGitGUI
             descriptionText.Text = "";
             amountText.Text = "";
 
+            //Gets the categories from the main window list, and adds it as an option to add to the expense.
             foreach (Window window in Application.Current.Windows)
             {
                 if (window.GetType() == typeof(MainWindow))
                 {
                     parent = window as MainWindow;
                     categoryList.ItemsSource = parent.homeBudget_.categories.List();
-
-
                 }
             }
 
@@ -68,14 +67,14 @@ namespace BudgetWithGitGUI
             }
             else
             {
-                //string date = datePicker1.SelectedDate.ToString('yyyy-MM-dd');
+                
                 DateTime datetime = datePicker1.SelectedDate ?? DateTime.Now;
                 MessageBoxResult result = MessageBox.Show($@"You are adding the following Expense:
                                 Description: {descriptionText.Text}
                                 Amount: {amountText.Text}
                                 Category: {categoryList.SelectedItem}
                                 Date: {datetime.ToString("yyyy-MM-dd")}", 
-                    "Home Budget", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                    "Home Budget", MessageBoxButton.YesNo, MessageBoxImage.Information);
                 
                 //User Story????
                 if(result == MessageBoxResult.Yes)

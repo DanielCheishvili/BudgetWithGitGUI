@@ -17,6 +17,8 @@ namespace BudgetWithGitGUI
         public MainWindow()
         {
             InitializeComponent();
+            
+            //Upon starting the application all the buttons except the open file one are invisible until you open the file.
             addCategory.Visibility = Visibility.Hidden;
             addExpense.Visibility = Visibility.Hidden;
             categoryDropDownList.Visibility = Visibility.Hidden;
@@ -39,14 +41,22 @@ namespace BudgetWithGitGUI
         private void openBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
+
+            
             openFile.CheckFileExists = false;
             openFile.CheckPathExists = false;
+
+            //opens the directory where the file was last used.
             openFile.RestoreDirectory = true;
+
             openFile.Filter = "DB Files|*.db";
             if (openFile.ShowDialog() == true)
-            {                
+            {       
+                //opens the database file.
                 _homeBudget = new HomeBudget(openFile.FileName, false);
                 fileName.Text = "Using File: " + openFile.SafeFileName;
+                
+                //adds the categories to the drop down menu.
                 categoryDropDownList.ItemsSource = _homeBudget.categories.List();
                 ResetExpenseList();
 
@@ -83,6 +93,8 @@ namespace BudgetWithGitGUI
         }
         private void ResetExpenseList()
         {
+            //adds only the description of the expense instead of the object itself.
+            //clears the list so other stuff can be added.
             expenseDropDownList.Items.Clear();
             foreach (Expense expense in _homeBudget.expenses.List())
             {
@@ -92,7 +104,7 @@ namespace BudgetWithGitGUI
 
         private void expenseDropDownList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            //checks for the selected item and once double click shows the full info of the expense
             ComboBox cmb = sender as ComboBox;
             if (cmb.SelectedItem != null)
             {
@@ -122,6 +134,7 @@ namespace BudgetWithGitGUI
 
         private void categoryDropDownList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            //checks for the selected item and once double click shows the full info of the category
             ComboBox cmb = sender as ComboBox;
             if (cmb.SelectedItem != null)
             {
