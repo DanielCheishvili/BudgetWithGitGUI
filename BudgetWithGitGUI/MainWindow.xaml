@@ -5,21 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BudgetWithGitGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="HomeBudget" Height="550" Width="1000" MinWidth="1000" MinHeight="550"
         >
-    <Grid>
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
              
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="350px"/> 
+            <ColumnDefinition Width="5*"/>
+           
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="200px"></RowDefinition>
+            <RowDefinition Height="70px"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            
         </Grid.RowDefinitions>
         <!--BackGround-->
         <Border Grid.ColumnSpan="4" Grid.RowSpan="4">
@@ -31,78 +31,107 @@
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
+        <DataGrid AutoGenerateColumns="False" 
+                  Name="dataGrid"
+                  Grid.Column="1"
+                  Grid.RowSpan="3"
+                  Grid.Row="1"
+                  IsReadOnly="True">
+            
+        </DataGrid>
         <TextBlock 
-            Grid.Row="0"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            HorizontalAlignment="Center"
+            Margin="10"
+            HorizontalAlignment="Left"
             VerticalAlignment="Center"
             FontSize="50">
             Home Budget
         </TextBlock>
         <Button 
             x:Name="openBtn" 
-            Grid.Column="1" 
+            Grid.Column="2" 
             Grid.Row="1"
-            Grid.ColumnSpan="2"
-            Grid.RowSpan="2"
+            Grid.RowSpan="3"
             Width="220" 
-            Height="80" 
+            Height="60" 
             FontSize="25"
             FontWeight="Bold"
             Click="openBtn_Click" >
-            Open Existing File
+            Open/Create File
         </Button>
-        <Button 
-            x:Name="addExpense" 
-            Grid.Column="0" 
-            Grid.Row="3"
-            Grid.ColumnSpan="2"
-            Width="160" 
-            Height="40" 
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Click="addExpenseBtn_Click" 
-            FontSize="25"
-            FontWeight="Bold"
-            >
-            Add Expense
-        </Button>
-        <Button 
-            x:Name="addCategory" 
-            Grid.Column="2" 
-            Grid.Row="3" 
-            Grid.ColumnSpan="2"
-            Width="170" 
-            Height="40" 
-            Click="addCategoryBtn_Click"
-            FontSize="25"
-            FontWeight="Bold"
+
+        <GroupBox x:Name="filterGB" Margin="10,6" BorderBrush="Red" Grid.Row="1" Header="Filter">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock VerticalAlignment="Bottom">Start Date</TextBlock>
+                <DatePicker Grid.Row="1"></DatePicker>
+                <TextBlock Grid.Row="2" VerticalAlignment="Bottom">End Date</TextBlock>
+                <DatePicker Grid.Row="3"></DatePicker>
+                <CheckBox VerticalAlignment="Bottom" Grid.Row="4">Filter by Category</CheckBox>
+                <ComboBox 
+                    Grid.Row="5"
+                    
+                    Height="20"
+                    x:Name="categoryDropDownList"
+                    HorizontalAlignment="Stretch"
+                    IsEditable="True"
+                    MouseDoubleClick="categoryDropDownList_MouseDoubleClick">
+                </ComboBox>
+            </Grid>
             
-            >
-            Add Category
-        </Button>
+        </GroupBox>
+        <GroupBox x:Name="summaryGB" Margin="10,6" BorderBrush="Red" Grid.Row="2" Header="Summary">
+            <Grid>
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    
+                </Grid.RowDefinitions>
+                <CheckBox Grid.Row="0">By Month</CheckBox>
+                <CheckBox Grid.Row="1">By Category</CheckBox>
+                
+            </Grid>
+
+        </GroupBox>
+        <WrapPanel Grid.Row="3" Orientation="Vertical">
+                <Button 
+                    x:Name="addExpense"                             
+                    Click="addExpenseBtn_Click" 
+                    FontSize="20"
+                    Width="350px"
+                    Margin="10,5"
+                    >
+                        Add Expense
+                </Button>
+            <Button 
+                x:Name="addCategory"                                
+                Click="addCategoryBtn_Click"
+                FontSize="20"
+                Width="350px"
+                Margin="10,5"       
+                >
+                Add Category
+            </Button>
+        </WrapPanel>
+        
         <TextBlock Grid.Row="0"
-                   Grid.Column="0"
+                   Grid.Column="1"
                    x:Name="fileName"
-                   Grid.ColumnSpan="4"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Bottom"
                    Text="Using File:"
-                   FontSize="20">
-            
+                   VerticalAlignment="Bottom"
+                   FontSize="20"
+                   >
+
         </TextBlock>
-        <ComboBox 
-            Grid.Row="1"
-            Grid.Column="2"
-            Grid.RowSpan="2"
-            Grid.ColumnSpan="2"
-            Width="150"
-            Height="150"
-            x:Name="categoryDropDownList"
-            IsEditable="True"
-            MouseDoubleClick="categoryDropDownList_MouseDoubleClick">
-        </ComboBox>
+
+        <!--
         <ComboBox 
             Grid.Row="1"
             Grid.Column="0"
@@ -114,6 +143,7 @@
             IsEditable="True" 
             MouseDoubleClick="expenseDropDownList_MouseDoubleClick">
         </ComboBox>
+        -->
     </Grid>
 
 </Window>

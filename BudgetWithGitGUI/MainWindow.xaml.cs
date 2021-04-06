@@ -19,11 +19,13 @@ namespace BudgetWithGitGUI
             InitializeComponent();
             
             //Upon starting the application all the buttons except the open file one are invisible until you open the file.
-            addCategory.Visibility = Visibility.Hidden;
-            addExpense.Visibility = Visibility.Hidden;
-            categoryDropDownList.Visibility = Visibility.Hidden;
-            expenseDropDownList.Visibility = Visibility.Hidden;
+            addCategory.IsEnabled = false;
+            addExpense.IsEnabled = false;
+            filterGB.IsEnabled = false;
+            summaryGB.IsEnabled = false;
+            //expenseDropDownList.Visibility = Visibility.Hidden;
             fileName.Visibility = Visibility.Hidden;
+
         }
         public HomeBudget homeBudget_
         {
@@ -65,20 +67,20 @@ namespace BudgetWithGitGUI
             {
                 return;
             }
-            addCategory.Visibility = Visibility.Visible;
-            addExpense.Visibility = Visibility.Visible;
-            categoryDropDownList.Visibility = Visibility.Visible;
-            expenseDropDownList.Visibility = Visibility.Visible;
+            addCategory.IsEnabled = true;
+            addExpense.IsEnabled = true;
+            filterGB.IsEnabled = true;
+            summaryGB.IsEnabled = true;
+            //expenseDropDownList.Visibility = Visibility.Visible;
             fileName.Visibility = Visibility.Visible;
             openBtn.Visibility = Visibility.Hidden;
-
         }
 
         private void addExpenseBtn_Click(object sender, RoutedEventArgs e)
         {
             ExpenseWindow newExpWindow = new ExpenseWindow();
             newExpWindow.ShowDialog();
-            expenseDropDownList.ItemsSource = null;
+            //expenseDropDownList.ItemsSource = null;
             ResetExpenseList();
 
         }
@@ -95,10 +97,10 @@ namespace BudgetWithGitGUI
         {
             //adds only the description of the expense instead of the object itself.
             //clears the list so other stuff can be added.
-            expenseDropDownList.Items.Clear();
+            //expenseDropDownList.Items.Clear();
             foreach (Expense expense in _homeBudget.expenses.List())
             {
-                expenseDropDownList.Items.Add(expense.Description);
+                //expenseDropDownList.Items.Add(expense.Description);
             }
         }
 
