@@ -70,10 +70,10 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <TextBlock VerticalAlignment="Bottom">Start Date</TextBlock>
-                <DatePicker Grid.Row="1"></DatePicker>
+                <DatePicker x:Name="startDatePicker" Grid.Row="1"></DatePicker>
                 <TextBlock Grid.Row="2" VerticalAlignment="Bottom">End Date</TextBlock>
-                <DatePicker Grid.Row="3"></DatePicker>
-                <CheckBox VerticalAlignment="Bottom" Grid.Row="4">Filter by Category</CheckBox>
+                <DatePicker x:Name="endDatePicker" Grid.Row="3"></DatePicker>
+                <CheckBox x:Name="filterByCategoryCB" VerticalAlignment="Bottom" Grid.Row="4" HorizontalAlignment="Right" Width="318">Filter by Category</CheckBox>
                 <ComboBox 
                     Grid.Row="5"
                     
@@ -94,8 +94,8 @@
                     <RowDefinition></RowDefinition>
                     
                 </Grid.RowDefinitions>
-                <CheckBox Grid.Row="0">By Month</CheckBox>
-                <CheckBox Grid.Row="1">By Category</CheckBox>
+                <CheckBox x:Name="byMonthCB" Grid.Row="0">By Month</CheckBox>
+                <CheckBox x:Name="byCategoryCB" Grid.Row="1">By Category</CheckBox>
                 
             </Grid>
 

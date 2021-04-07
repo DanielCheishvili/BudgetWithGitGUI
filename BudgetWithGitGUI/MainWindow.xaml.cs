@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace BudgetWithGitGUI
@@ -17,13 +18,13 @@ namespace BudgetWithGitGUI
         public MainWindow()
         {
             InitializeComponent();
-            
+            FilterDataGrid();
+
             //Upon starting the application all the buttons except the open file one are invisible until you open the file.
             addCategory.IsEnabled = false;
             addExpense.IsEnabled = false;
             filterGB.IsEnabled = false;
             summaryGB.IsEnabled = false;
-            //expenseDropDownList.Visibility = Visibility.Hidden;
             fileName.Visibility = Visibility.Hidden;
 
         }
@@ -39,7 +40,68 @@ namespace BudgetWithGitGUI
             }
         }
 
+        private void FilterDataGrid()
+        {
+            CreateDataGrid();
+            bool filterFlag = filterByCategoryCB.IsChecked == true;
+            int id = 0;
+            if (byCategoryCB.IsChecked == false && byMonthCB.IsChecked == false)
+            {
+                dataGrid.ItemsSource = null;
+                ResetExpenseList();
+                dataGrid.ItemsSource = homeBudget_.expenses.List();
+            }
+            if (byCategoryCB.IsChecked == false && byMonthCB.IsChecked == true)
+            {
+                dataGrid.ItemsSource = null;
+                dataGrid.ItemsSource = homeBudget_.GetBudgetItemsByMonth(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
+            }
+            if (byCategoryCB.IsChecked == true && byMonthCB.IsChecked == false)
+            {
+                dataGrid.ItemsSource = null;
+                dataGrid.ItemsSource = homeBudget_.GetBudgetItemsByCategory(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
+            }
+            if (byCategoryCB.IsChecked == true && byMonthCB.IsChecked == true)
+            {
+                dataGrid.ItemsSource = null;
+                dataGrid.ItemsSource = homeBudget_.GetBudgetDictionaryByCategoryAndMonth(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
+            }
+        }
+        private void CreateDataGrid()
+        {
+            //https://stackoverflow.com/questions/704724/programmatically-add-column-rows-to-wpf-datagrid
 
+            dataGrid.Columns.Clear();
+            DataGridTextColumn column = new DataGridTextColumn();
+            column.Header = "Date";
+            column.Binding = new Binding("Date");
+            column.Binding.StringFormat = "yyyy-MM-dd";
+            dataGrid.Columns.Add(column);
+
+            column = new DataGridTextColumn();
+            column.Header = "Category";
+            column.Binding = new Binding("Category");       
+            dataGrid.Columns.Add(column);
+
+            column = new DataGridTextColumn();
+            column.Header = "Description";
+            column.Binding = new Binding("Description");
+            dataGrid.Columns.Add(column);
+
+            column = new DataGridTextColumn();
+            column.Header = "Amount";
+            column.Binding = new Binding("Amount");
+            column.Binding.StringFormat = "F2";
+            dataGrid.Columns.Add(column);
+
+            column = new DataGridTextColumn();
+            column.Header = "Balance";
+            column.Binding = new Binding("Balance");
+            column.Binding.StringFormat = "F2";
+            dataGrid.Columns.Add(column);
+
+        }
+            
         private void openBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
@@ -100,7 +162,7 @@ namespace BudgetWithGitGUI
             //expenseDropDownList.Items.Clear();
             foreach (Expense expense in _homeBudget.expenses.List())
             {
-                //expenseDropDownList.Items.Add(expense.Description);
+                //dataGrid.Items.Add(expense);
             }
         }
 
