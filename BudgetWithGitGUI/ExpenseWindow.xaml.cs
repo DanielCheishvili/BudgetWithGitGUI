@@ -27,8 +27,6 @@ namespace BudgetWithGitGUI
                     categoryList.ItemsSource = parent.homeBudget_.categories.List();
                 }
             }
-
-
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)

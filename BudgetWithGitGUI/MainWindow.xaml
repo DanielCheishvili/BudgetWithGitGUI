@@ -73,7 +73,14 @@
                 <DatePicker x:Name="startDatePicker" Grid.Row="1"></DatePicker>
                 <TextBlock Grid.Row="2" VerticalAlignment="Bottom">End Date</TextBlock>
                 <DatePicker x:Name="endDatePicker" Grid.Row="3"></DatePicker>
-                <CheckBox x:Name="filterByCategoryCB" VerticalAlignment="Bottom" Grid.Row="4" HorizontalAlignment="Right" Width="318">Filter by Category</CheckBox>
+                <CheckBox 
+                    x:Name="filterByCategoryCB" 
+                    VerticalAlignment="Bottom" 
+                    Grid.Row="4" 
+                    HorizontalAlignment="Right" 
+                    Width="318"
+                    Click="filterByCategoryCB_Click"
+                    >Filter by Category</CheckBox>
                 <ComboBox 
                     Grid.Row="5"
                     

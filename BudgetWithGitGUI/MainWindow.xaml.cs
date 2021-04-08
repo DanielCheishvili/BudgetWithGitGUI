@@ -48,7 +48,12 @@ namespace BudgetWithGitGUI
             int id = 0;
             if(categoryDropDownList.SelectedIndex > -1)
             {
-                id = categoryDropDownList.SelectedIndex;
+                foreach (Expense expense in _homeBudget.expenses.List())
+                {
+
+                    id = homeBudget_.categories.GetCategoryFromId(expense.Category).Id;
+                    
+                }
             }          
             if (filterByCategoryCB.IsChecked == true)
             {
@@ -60,27 +65,25 @@ namespace BudgetWithGitGUI
             {
                 CreateDefaultDataGrid();
                 dataGrid.ItemsSource = null;
-                
-                /*ResetExpenseList();
-                dataGrid.ItemsSource = homeBudget_.expenses.List();*/
+                dataGrid.ItemsSource = homeBudget_.expenses.List();
             }
             if (byCategoryCB.IsChecked == false && byMonthCB.IsChecked == true)
             {
                 CreateSummaryByMonthGrid();
                 dataGrid.ItemsSource = null;
-                //dataGrid.ItemsSource = homeBudget_.GetBudgetItemsByMonth(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
+                dataGrid.ItemsSource = homeBudget_.GetBudgetItemsByMonth(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
             }
             if (byCategoryCB.IsChecked == true && byMonthCB.IsChecked == false)
             {
                 CreateSummaryByCategoryGrid();
                 dataGrid.ItemsSource = null;
-                /*dataGrid.ItemsSource = homeBudget_.GetBudgetItemsByCategory(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);*/
+                dataGrid.ItemsSource = homeBudget_.GetBudgetItemsByCategory(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
             }
             if (byCategoryCB.IsChecked == true && byMonthCB.IsChecked == true)
             {
                 CreateSummaryByCategoryAndMonthGrid();
                 dataGrid.ItemsSource = null;
-                /*dataGrid.ItemsSource = homeBudget_.GetBudgetDictionaryByCategoryAndMonth(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);*/
+                dataGrid.ItemsSource = homeBudget_.GetBudgetDictionaryByCategoryAndMonth(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
             }
         }
         
@@ -111,11 +114,11 @@ namespace BudgetWithGitGUI
             column.Binding.StringFormat = "C2";
             dataGrid.Columns.Add(column);
 
-            column = new DataGridTextColumn();
+            /*column = new DataGridTextColumn();
             column.Header = "Balance";
             column.Binding = new Binding("Balance");
             column.Binding.StringFormat = "C2";
-            dataGrid.Columns.Add(column);
+            dataGrid.Columns.Add(column);*/
 
         }
         private void CreateSummaryByMonthGrid()
@@ -300,5 +303,10 @@ namespace BudgetWithGitGUI
             FilterDataGrid();
         }
         #endregion
+
+        private void filterByCategoryCB_Click(object sender, RoutedEventArgs e)
+        {
+            FilterDataGrid();
+        }
     }
 }
