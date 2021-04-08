@@ -184,6 +184,7 @@ namespace BudgetWithGitGUI
             openFile.RestoreDirectory = true;
 
             openFile.Filter = "DB Files|*.db";
+
             if (openFile.ShowDialog() == true)
             {       
                 //opens the database file.
@@ -193,6 +194,9 @@ namespace BudgetWithGitGUI
                 //adds the categories to the drop down menu.
                 categoryDropDownList.ItemsSource = _homeBudget.categories.List();
                 ResetExpenseList();
+
+
+
 
             }
             else
@@ -214,7 +218,7 @@ namespace BudgetWithGitGUI
             ExpenseWindow newExpWindow = new ExpenseWindow();
             newExpWindow.ShowDialog();
             ResetExpenseList();
-
+         
         }
 
         private void addCategoryBtn_Click(object sender, RoutedEventArgs e)
