@@ -18,7 +18,7 @@ namespace BudgetWithGitGUI
         public MainWindow()
         {
             InitializeComponent();
-            FilterDataGrid();
+            
 
             //Upon starting the application all the buttons except the open file one are invisible until you open the file.
             addCategory.IsEnabled = false;
@@ -39,38 +39,55 @@ namespace BudgetWithGitGUI
                 _homeBudget = value;
             }
         }
-
+        #region creating grids
         private void FilterDataGrid()
         {
-            CreateDataGrid();
-            bool filterFlag = filterByCategoryCB.IsChecked == true;
+            dataGrid.Columns.Clear();
+            
+            bool filterFlag = false;
             int id = 0;
+            if(categoryDropDownList.SelectedIndex > -1)
+            {
+                id = categoryDropDownList.SelectedIndex;
+            }          
+            if (filterByCategoryCB.IsChecked == true)
+            {
+                filterFlag = true;
+            }
+
+            
             if (byCategoryCB.IsChecked == false && byMonthCB.IsChecked == false)
             {
+                CreateDefaultDataGrid();
                 dataGrid.ItemsSource = null;
-                ResetExpenseList();
-                dataGrid.ItemsSource = homeBudget_.expenses.List();
+                
+                /*ResetExpenseList();
+                dataGrid.ItemsSource = homeBudget_.expenses.List();*/
             }
             if (byCategoryCB.IsChecked == false && byMonthCB.IsChecked == true)
             {
+                CreateSummaryByMonthGrid();
                 dataGrid.ItemsSource = null;
-                dataGrid.ItemsSource = homeBudget_.GetBudgetItemsByMonth(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
+                //dataGrid.ItemsSource = homeBudget_.GetBudgetItemsByMonth(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
             }
             if (byCategoryCB.IsChecked == true && byMonthCB.IsChecked == false)
             {
+                CreateSummaryByCategoryGrid();
                 dataGrid.ItemsSource = null;
-                dataGrid.ItemsSource = homeBudget_.GetBudgetItemsByCategory(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
+                /*dataGrid.ItemsSource = homeBudget_.GetBudgetItemsByCategory(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);*/
             }
             if (byCategoryCB.IsChecked == true && byMonthCB.IsChecked == true)
             {
+                CreateSummaryByCategoryAndMonthGrid();
                 dataGrid.ItemsSource = null;
-                dataGrid.ItemsSource = homeBudget_.GetBudgetDictionaryByCategoryAndMonth(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
+                /*dataGrid.ItemsSource = homeBudget_.GetBudgetDictionaryByCategoryAndMonth(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);*/
             }
         }
-        private void CreateDataGrid()
+        
+        //https://stackoverflow.com/questions/704724/programmatically-add-column-rows-to-wpf-datagrid
+        private void CreateDefaultDataGrid()
         {
-            //https://stackoverflow.com/questions/704724/programmatically-add-column-rows-to-wpf-datagrid
-
+            
             dataGrid.Columns.Clear();
             DataGridTextColumn column = new DataGridTextColumn();
             column.Header = "Date";
@@ -91,17 +108,70 @@ namespace BudgetWithGitGUI
             column = new DataGridTextColumn();
             column.Header = "Amount";
             column.Binding = new Binding("Amount");
-            column.Binding.StringFormat = "F2";
+            column.Binding.StringFormat = "C2";
             dataGrid.Columns.Add(column);
 
             column = new DataGridTextColumn();
             column.Header = "Balance";
             column.Binding = new Binding("Balance");
-            column.Binding.StringFormat = "F2";
+            column.Binding.StringFormat = "C2";
             dataGrid.Columns.Add(column);
 
         }
+        private void CreateSummaryByMonthGrid()
+        {
+            dataGrid.Columns.Clear();
+            DataGridTextColumn column = new DataGridTextColumn();
+            column.Header = "Month";
+            column.Binding = new Binding("Month");
+            column.Binding.StringFormat = "yyyy-MM";
+            dataGrid.Columns.Add(column);
+
+            column = new DataGridTextColumn();
+            column.Header = "Total";
+            column.Binding = new Binding("Total");
+            column.Binding.StringFormat = "C2";
+            dataGrid.Columns.Add(column);
+        }
+        private void CreateSummaryByCategoryGrid()
+        {
+            dataGrid.Columns.Clear();
+            DataGridTextColumn column = new DataGridTextColumn();
+            column.Header = "Category";
+            column.Binding = new Binding("Category");           
+            dataGrid.Columns.Add(column);
+
+            column = new DataGridTextColumn();
+            column.Header = "Total";
+            column.Binding = new Binding("Total");
+            column.Binding.StringFormat = "C2";
+            dataGrid.Columns.Add(column);
+        }
+        private void CreateSummaryByCategoryAndMonthGrid()
+        {
+            dataGrid.Columns.Clear();
+            DataGridTextColumn column = new DataGridTextColumn();
+            column.Header = "Month";
+            column.Binding = new Binding("Month");
+            column.Binding.StringFormat = "yyyy-MM";
+            dataGrid.Columns.Add(column);
+
+            foreach(Category category in homeBudget_.categories.List())
+            {
+                column = new DataGridTextColumn();
+                column.Header = category.Description;
+                column.Binding = new Binding(category.Description);
+                dataGrid.Columns.Add(column);
+            }
+            column = new DataGridTextColumn();
+            column.Header = "Total";
+            column.Binding = new Binding("Total");
+            column.Binding.StringFormat = "C2";
+            dataGrid.Columns.Add(column);
             
+        }
+        #endregion
+
         private void openBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
@@ -136,13 +206,13 @@ namespace BudgetWithGitGUI
             //expenseDropDownList.Visibility = Visibility.Visible;
             fileName.Visibility = Visibility.Visible;
             openBtn.Visibility = Visibility.Hidden;
+            FilterDataGrid();
         }
-
+        #region buttons&checkboxes
         private void addExpenseBtn_Click(object sender, RoutedEventArgs e)
         {
             ExpenseWindow newExpWindow = new ExpenseWindow();
             newExpWindow.ShowDialog();
-            //expenseDropDownList.ItemsSource = null;
             ResetExpenseList();
 
         }
@@ -184,8 +254,6 @@ namespace BudgetWithGitGUI
                                            $"Date: {expense.Date.ToString("yyyy-MM-dd")}");
                     }
 
-
-
                 }
             }
             else
@@ -219,5 +287,18 @@ namespace BudgetWithGitGUI
             }
             
         }
+
+        private void byMonthCB_Checked(object sender, RoutedEventArgs e)
+        {
+           
+            FilterDataGrid();
+        }
+
+        private void byCategoryCB_Checked(object sender, RoutedEventArgs e)
+        {
+            
+            FilterDataGrid();
+        }
+        #endregion
     }
 }

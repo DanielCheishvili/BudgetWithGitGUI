@@ -94,8 +94,8 @@
                     <RowDefinition></RowDefinition>
                     
                 </Grid.RowDefinitions>
-                <CheckBox x:Name="byMonthCB" Grid.Row="0">By Month</CheckBox>
-                <CheckBox x:Name="byCategoryCB" Grid.Row="1">By Category</CheckBox>
+                <CheckBox x:Name="byMonthCB" Grid.Row="0"  Click="byMonthCB_Checked">By Month</CheckBox>
+                <CheckBox x:Name="byCategoryCB" Grid.Row="1"  Click="byCategoryCB_Checked">By Category</CheckBox>
                 
             </Grid>
 
