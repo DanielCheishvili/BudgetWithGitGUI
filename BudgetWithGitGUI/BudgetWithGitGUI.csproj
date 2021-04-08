@@ -79,6 +79,9 @@
     </ApplicationDefinition>
 
     <Page Include="ExpenseWindow.xaml">
+    <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
 
     <Page Include="CategoryWindow.xaml">
 
@@ -96,6 +99,7 @@
 
     <Compile Include="ExpenseWindow.xaml.cs">
       <DependentUpon>ExpenseWindow.xaml</DependentUpon>
+    </Compile>
 
     <Compile Include="CategoryWindow.xaml.cs">
       <DependentUpon>CategoryWindow.xaml</DependentUpon>

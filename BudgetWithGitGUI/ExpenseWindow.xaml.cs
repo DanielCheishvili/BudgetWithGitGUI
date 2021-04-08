@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Budget;
 
 namespace BudgetWithGitGUI
 {
@@ -19,51 +10,86 @@ namespace BudgetWithGitGUI
     /// </summary>
     public partial class ExpenseWindow : Window
     {
-        public ExpenseWindow(ref Budget.HomeBudget homeBudget)
+        private MainWindow parent;
+        public ExpenseWindow()
         {
             InitializeComponent();
             datePicker1.SelectedDate = DateTime.Today;
+            descriptionText.Text = "";
+            amountText.Text = "";
+
+            //Gets the categories from the main window list, and adds it as an option to add to the expense.
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window.GetType() == typeof(MainWindow))
+                {
+                    parent = window as MainWindow;
+                    categoryList.ItemsSource = parent.homeBudget_.categories.List();
+                }
+            }
+
+
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Are you sure you want to cancel ?", "Home Budget", MessageBoxButton.YesNoCancel, MessageBoxImage.Exclamation);
+            MessageBoxResult results = MessageBox.Show("Are you sure you want to cancel ?", "Home Budget", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if(MessageBoxResult.Yes == results)
+            {
+                Close();
+            }
+            else
+            {
+                return;
+            }
 
         }
 
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
+            
             //Add Receipt , summarize form
-            if (descriptionText.Text == "" )
+            if (descriptionText.Text == "")
             {
-                MessageBox.Show("Please fill in all the fields", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("The Description Text is missing ", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else if (amountText.Text == "")
+            else if (amountText.Text == "" || !double.TryParse(amountText.Text, out double amount))
             {
-                MessageBox.Show("Please fill in all the fields", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("The amount is missing or it is not a number", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else if (categoryText.Text == "")
+            else if (categoryList.Text == "")
             {
-                MessageBox.Show("Please fill in all the fields", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("The category type is missing", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else if(datePicker1.SelectedDate == null)
+            else if (datePicker1.SelectedDate == null)
             {
-                MessageBox.Show("Please fill in all the fields", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("The date is missing", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else
             {
                 
-                MessageBox.Show("Would you like to add this data", "Home Budget", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                DateTime datetime = datePicker1.SelectedDate ?? DateTime.Now;
+                MessageBoxResult result = MessageBox.Show($@"You are adding the following Expense:
+                                Description: {descriptionText.Text}
+                                Amount: {amountText.Text}
+                                Category: {categoryList.SelectedItem}
+                                Date: {datetime.ToString("yyyy-MM-dd")}", 
+                    "Home Budget", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                
+                //User Story????
+                if(result == MessageBoxResult.Yes)
+                {
+                    parent.homeBudget_.expenses.Add(Convert.ToDateTime(datePicker1.SelectedDate), categoryList.SelectedIndex + 1, Convert.ToDouble(amountText.Text), descriptionText.Text);
+                    descriptionText.Text = "";
+                    amountText.Text = "";
+                   
+                }
+                else
+                {
+                    return;
+                }
             }
-            
-        }
 
-        private void amountText_KeyDown(object sender, KeyEventArgs e)
-        {
-            if(e.Key == Key.Enter)
-            {
-                amountText.Text = double.Parse(amountText.Text).ToString("c");
-            }
         }
     }
 }
