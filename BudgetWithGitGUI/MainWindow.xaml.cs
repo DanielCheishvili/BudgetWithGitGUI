@@ -41,8 +41,7 @@ namespace BudgetWithGitGUI
         }
         #region creating grids
         private void FilterDataGrid()
-        {
-            dataGrid.Columns.Clear();
+        {          
             
             bool filterFlag = false;
             int id = 0;
@@ -311,6 +310,24 @@ namespace BudgetWithGitGUI
         private void filterByCategoryCB_Click(object sender, RoutedEventArgs e)
         {
             FilterDataGrid();
+        }
+
+        private void startDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FilterDataGrid();
+        }
+
+        private void endDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FilterDataGrid();
+        }
+
+        private void categoryDropDownList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(byCategoryCB.IsChecked == true)
+            {
+                FilterDataGrid();
+            }
         }
     }
 }

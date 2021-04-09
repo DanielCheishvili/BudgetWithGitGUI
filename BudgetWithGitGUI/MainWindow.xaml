@@ -70,9 +70,9 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <TextBlock VerticalAlignment="Bottom">Start Date</TextBlock>
-                <DatePicker x:Name="startDatePicker" Grid.Row="1"></DatePicker>
-                <TextBlock Grid.Row="2" VerticalAlignment="Bottom">End Date</TextBlock>
-                <DatePicker x:Name="endDatePicker" Grid.Row="3"></DatePicker>
+                <DatePicker x:Name="startDatePicker" Grid.Row="1" SelectedDateChanged="startDatePicker_SelectedDateChanged"></DatePicker>
+                <TextBlock Grid.Row="2" VerticalAlignment="Bottom" >End Date</TextBlock>
+                <DatePicker x:Name="endDatePicker" Grid.Row="3" SelectedDateChanged="endDatePicker_SelectedDateChanged"></DatePicker>
                 <CheckBox 
                     x:Name="filterByCategoryCB" 
                     VerticalAlignment="Bottom" 
@@ -83,7 +83,7 @@
                     >Filter by Category</CheckBox>
                 <ComboBox 
                     Grid.Row="5"
-                    
+                    SelectionChanged="categoryDropDownList_SelectionChanged"
                     Height="20"
                     x:Name="categoryDropDownList"
                     HorizontalAlignment="Stretch"
