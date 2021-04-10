@@ -1,6 +1,5 @@
 ﻿using Budget;
 using Microsoft.Win32;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -11,46 +10,19 @@ namespace BudgetWithGitGUI
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    
+    //This class is in charge of dealing with the datagrid and formatting properly
     public partial class MainWindow : Window
     {
-        //private string locationOfPreviousSave;
-        //private bool isNewFile = true;
-        private HomeBudget _homeBudget;
-        public MainWindow()
+        private void UpdateDataGrid()
         {
-            InitializeComponent();
-            
 
-            //Upon starting the application all the buttons except the open file one are invisible until you open the file.
-            addCategory.IsEnabled = false;
-            addExpense.IsEnabled = false;
-            filterGB.IsEnabled = false;
-            summaryGB.IsEnabled = false;
-            fileName.Visibility = Visibility.Hidden;
-            contextMenu.IsEnabled = false;
-
-        }
-        public HomeBudget homeBudget_
-        {
-            get
-            {
-                return _homeBudget;
-            }
-            set
-            {
-                _homeBudget = value;
-            }
-        }
-        #region creating grids
-        private void FilterDataGrid()
-        {          
-            
             bool filterFlag = false;
             int id = -1;
-            if(categoryDropDownList.SelectedIndex > -1)
+            if (categoryDropDownList.SelectedIndex > -1)
             {
-                id = ((Category)categoryDropDownList.SelectedItem).Id;               
-            }          
+                id = ((Category)categoryDropDownList.SelectedItem).Id;
+            }
             if (filterByCategoryCB.IsChecked == true)
             {
                 filterFlag = true;
@@ -59,7 +31,7 @@ namespace BudgetWithGitGUI
             {
                 modifySelect.IsEnabled = false;
                 DeleteSelect.IsEnabled = false;
-                
+
 
             }
             else
@@ -67,17 +39,23 @@ namespace BudgetWithGitGUI
                 modifySelect.IsEnabled = true;
                 DeleteSelect.IsEnabled = true;
             }
-            
+            if(startDatePicker.SelectedDate > endDatePicker.SelectedDate)
+            {
+                endDatePicker.SelectedDate = null;
+                MessageBox.Show("The end date cannot be earlier than the start date", "Date Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                
+            }
+
 
 
             if (byCategoryCB.IsChecked == false && byMonthCB.IsChecked == false)
             {
-       
+
                 CreateDefaultDataGrid();
                 dataGrid.ItemsSource = null;
                 dataGrid.ItemsSource = homeBudget_.GetBudgetItems(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
             }
-           
+
             if (byCategoryCB.IsChecked == false && byMonthCB.IsChecked == true)
             {
                 CreateSummaryByMonthGrid();
@@ -94,16 +72,16 @@ namespace BudgetWithGitGUI
             {
 
                 CreateSummaryByCategoryAndMonthGrid();
-                dataGrid.ItemsSource = null;                              
+                dataGrid.ItemsSource = null;
                 dataGrid.ItemsSource = homeBudget_.GetBudgetDictionaryByCategoryAndMonth(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
 
             }
         }
-        
+
         //https://stackoverflow.com/questions/704724/programmatically-add-column-rows-to-wpf-datagrid
         private void CreateDefaultDataGrid()
         {
-            
+
             dataGrid.Columns.Clear();
             DataGridTextColumn column = new DataGridTextColumn();
             column.Header = "Date";
@@ -113,7 +91,7 @@ namespace BudgetWithGitGUI
 
             column = new DataGridTextColumn();
             column.Header = "Category";
-            column.Binding = new Binding("Category");       
+            column.Binding = new Binding("Category");
             dataGrid.Columns.Add(column);
 
             column = new DataGridTextColumn();
@@ -154,7 +132,7 @@ namespace BudgetWithGitGUI
             dataGrid.Columns.Clear();
             DataGridTextColumn column = new DataGridTextColumn();
             column.Header = "Category";
-            column.Binding = new Binding("Category");           
+            column.Binding = new Binding("Category");
             dataGrid.Columns.Add(column);
 
             column = new DataGridTextColumn();
@@ -186,8 +164,36 @@ namespace BudgetWithGitGUI
             dataGrid.Columns.Add(column);
 
         }
-        #endregion
+    }
+    public partial class MainWindow : Window
+    {
+        private HomeBudget _homeBudget;
+        public MainWindow()
+        {
+            InitializeComponent();
 
+            //Upon starting the application all the buttons except the open file one are invisible until you open the file.
+            addCategory.IsEnabled = false;
+            addExpense.IsEnabled = false;
+            filterGB.IsEnabled = false;
+            summaryGB.IsEnabled = false;
+            fileName.Visibility = Visibility.Hidden;
+            contextMenu.IsEnabled = false;
+
+        }
+        public HomeBudget homeBudget_
+        {
+            get
+            {
+                return _homeBudget;
+            }
+            set
+            {
+                _homeBudget = value;
+            }
+        }
+
+        #region buttons and checkboxes
         private void openBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
@@ -218,18 +224,17 @@ namespace BudgetWithGitGUI
             addExpense.IsEnabled = true;
             filterGB.IsEnabled = true;
             summaryGB.IsEnabled = true;
-            //expenseDropDownList.Visibility = Visibility.Visible;
             fileName.Visibility = Visibility.Visible;
             openBtn.Visibility = Visibility.Hidden;
             contextMenu.IsEnabled = true;
-            FilterDataGrid();
+            UpdateDataGrid();
         }
         #region buttons&checkboxes
         private void addExpenseBtn_Click(object sender, RoutedEventArgs e)
         {
             ExpenseWindow newExpWindow = new ExpenseWindow(homeBudget_,false,-1);
             newExpWindow.ShowDialog();
-            FilterDataGrid();
+            UpdateDataGrid();
          
         }
 
@@ -241,36 +246,7 @@ namespace BudgetWithGitGUI
             categoryDropDownList.ItemsSource = null;
             categoryDropDownList.ItemsSource = _homeBudget.categories.List();
         }
-        
-
-        private void expenseDropDownList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            //checks for the selected item and once double click shows the full info of the expense
-            ComboBox cmb = sender as ComboBox;
-            if (cmb.SelectedItem != null)
-            {
-                foreach (Expense expense in _homeBudget.expenses.List())
-                {
-
-                    if (cmb.SelectedItem.ToString() == expense.Description)
-                    {
-
-                        MessageBox.Show($"Expense Description: {expense.Description}\n" +
-                                           $"Amount: {expense.Amount}\n" +
-                                           $"Category Type: {homeBudget_.categories.GetCategoryFromId(expense.Category)}\n" +
-                                           $"Date: {expense.Date.ToString("yyyy-MM-dd")}");
-                    }
-
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please select an item from the drop down list before double clicking", "Expense Drop down list", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            
-
-        }
-
+              
         private void categoryDropDownList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             //checks for the selected item and once double click shows the full info of the category
@@ -294,53 +270,57 @@ namespace BudgetWithGitGUI
             }
             
         }
+        
 
         private void byMonthCB_Checked(object sender, RoutedEventArgs e)
         {
            
-            FilterDataGrid();
+            UpdateDataGrid();
         }
 
         private void byCategoryCB_Checked(object sender, RoutedEventArgs e)
         {
             
-            FilterDataGrid();
+            UpdateDataGrid();
         }
         #endregion
 
         private void filterByCategoryCB_Click(object sender, RoutedEventArgs e)
         {
-            FilterDataGrid();
+            UpdateDataGrid();
         }
 
         private void startDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            FilterDataGrid();
+            UpdateDataGrid();
         }
 
         private void endDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            FilterDataGrid();
+            UpdateDataGrid();
         }
 
         private void categoryDropDownList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(filterByCategoryCB.IsChecked == true)
             {
-                FilterDataGrid();
+                UpdateDataGrid();
             }
         }
 
         private void dataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ModifyExpenseForm();
-            e.Handled = true;
-        }
-
-        private void dataGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
+            if(byCategoryCB.IsChecked == true || byMonthCB.IsChecked == true)
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+                ModifyExpenseForm();
+            }
            
-
+            
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -350,15 +330,12 @@ namespace BudgetWithGitGUI
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
-            dataGrid.Items.RemoveAt(dataGrid.SelectedIndex);
-            homeBudget_.expenses.Delete(dataGrid.SelectedIndex);
-            FilterDataGrid();
+            BudgetItem item = dataGrid.SelectedItem as BudgetItem;
+            ExpenseWindow modifyWin = new ExpenseWindow(homeBudget_, false, item.ExpenseID);
+            homeBudget_.expenses.Delete(item.ExpenseID);
+            UpdateDataGrid();
         }
-
-        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
-        {
-            
-        }
+        #endregion
         private void ModifyExpenseForm()
         {
             
@@ -368,19 +345,16 @@ namespace BudgetWithGitGUI
             {
                 ExpenseWindow modifyWin = new ExpenseWindow(homeBudget_, true, item.ExpenseID);
                 modifyWin.datePicker1.SelectedDate = item.Date;
-                modifyWin.categoryList.SelectedIndex = item.CategoryID;
+                modifyWin.categoryList.SelectedIndex = item.CategoryID - 1;
                 modifyWin.amountText.Text = item.Amount.ToString();
                 modifyWin.descriptionText.Text = item.ShortDescription;
-                
                 modifyWin.ShowDialog();
-
-
+                UpdateDataGrid();
 
             }
             else
-            {
-                MessageBox.Show("Please choose an item from the provided data", "Expense Name", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+                return;
+           
         }
     }
 }

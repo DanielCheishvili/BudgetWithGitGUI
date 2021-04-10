@@ -37,14 +37,13 @@
                   Grid.RowSpan="3"
                   Grid.Row="1"
                   IsReadOnly="True"
-                  MouseDoubleClick="dataGrid_MouseDoubleClick"
-                  MouseRightButtonDown="dataGrid_MouseRightButtonDown"
+                  MouseDoubleClick="dataGrid_MouseDoubleClick"                 
                   FrozenColumnCount="1">
             <DataGrid.ContextMenu>
                 <ContextMenu x:Name="contextMenu">
                     <MenuItem x:Name="modifySelect" Header="Modify" Click="MenuItem_Click"></MenuItem>
                     <MenuItem x:Name="DeleteSelect" Header="Delete" Click="MenuItem_Click_1"></MenuItem>
-                    <MenuItem Header="Cancel" Click="MenuItem_Click_2"></MenuItem>
+                    <MenuItem Header="Cancel"></MenuItem>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             
