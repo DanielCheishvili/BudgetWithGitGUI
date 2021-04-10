@@ -11,12 +11,27 @@ namespace BudgetWithGitGUI
     public partial class ExpenseWindow : Window
     {
         private MainWindow parent;
-        public ExpenseWindow()
+        public ExpenseWindow(HomeBudget budget, bool isModified, int expenseId )
         {
             InitializeComponent();
             datePicker1.SelectedDate = DateTime.Today;
             descriptionText.Text = "";
             amountText.Text = "";
+            buttonUpdate.Visibility = Visibility.Hidden;
+            buttonDelet.Visibility = Visibility.Hidden;
+
+            if(isModified == true && expenseId !=-1)
+            {
+
+                Title = "ModifyExpense";
+                buttonUpdate.Visibility = Visibility.Visible;
+                buttonDelet.Visibility = Visibility.Visible;
+                buttonSave.Visibility = Visibility.Hidden;
+                titleOfWindow.Text = "Modify Expense";
+                budget.expenses.UpdateProperties(expenseId, Convert.ToDateTime(datePicker1.SelectedDate), categoryList.SelectedIndex + 1, -Convert.ToDouble(amountText.Text), descriptionText.Text);
+
+
+            }
 
             //Gets the categories from the main window list, and adds it as an option to add to the expense.
             foreach (Window window in Application.Current.Windows)
@@ -45,7 +60,12 @@ namespace BudgetWithGitGUI
 
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
-            
+
+            InputFields();
+
+        }
+        public void InputFields()
+        {
             //Add Receipt , summarize form
             if (descriptionText.Text == "")
             {
@@ -65,28 +85,47 @@ namespace BudgetWithGitGUI
             }
             else
             {
-                
+                Category category = parent.homeBudget_.categories.GetCategoryFromId(categoryList.SelectedIndex + 1);
+
                 DateTime datetime = datePicker1.SelectedDate ?? DateTime.Now;
                 MessageBoxResult result = MessageBox.Show($@"You are adding the following Expense:
                                 Description: {descriptionText.Text}
                                 Amount: {amountText.Text}
                                 Category: {categoryList.SelectedItem}
-                                Date: {datetime.ToString("yyyy-MM-dd")}", 
+                                Date: {datetime.ToString("yyyy-MM-dd")}",
                     "Home Budget", MessageBoxButton.YesNo, MessageBoxImage.Information);
-                
-                //User Story????
-                if(result == MessageBoxResult.Yes)
+
+
+                if (result == MessageBoxResult.Yes)
                 {
-                    parent.homeBudget_.expenses.Add(Convert.ToDateTime(datePicker1.SelectedDate), categoryList.SelectedIndex + 1, Convert.ToDouble(amountText.Text), descriptionText.Text);
+                    if ((int)category.Type == 2 || (int)category.Type == 4)
+                    {
+                        parent.homeBudget_.expenses.Add(Convert.ToDateTime(datePicker1.SelectedDate), categoryList.SelectedIndex + 1, -Convert.ToDouble(amountText.Text), descriptionText.Text);
+                    }
+                    if ((int)category.Type == 1 || (int)category.Type == 3)
+                    {
+                        parent.homeBudget_.expenses.Add(Convert.ToDateTime(datePicker1.SelectedDate), categoryList.SelectedIndex + 1, Convert.ToDouble(amountText.Text), descriptionText.Text);
+
+                    }
+
                     descriptionText.Text = "";
                     amountText.Text = "";
-                   
+
                 }
                 else
                 {
                     return;
                 }
             }
+        }
+
+        private void buttonUpdate_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void buttonDelet_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

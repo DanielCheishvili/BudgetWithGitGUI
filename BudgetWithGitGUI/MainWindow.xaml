@@ -36,7 +36,17 @@
                   Grid.Column="1"
                   Grid.RowSpan="3"
                   Grid.Row="1"
-                  IsReadOnly="True">
+                  IsReadOnly="True"
+                  MouseDoubleClick="dataGrid_MouseDoubleClick"
+                  MouseRightButtonDown="dataGrid_MouseRightButtonDown"
+                  FrozenColumnCount="1">
+            <DataGrid.ContextMenu>
+                <ContextMenu x:Name="contextMenu">
+                    <MenuItem x:Name="modifySelect" Header="Modify" Click="MenuItem_Click"></MenuItem>
+                    <MenuItem x:Name="DeleteSelect" Header="Delete" Click="MenuItem_Click_1"></MenuItem>
+                    <MenuItem Header="Cancel" Click="MenuItem_Click_2"></MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             
         </DataGrid>
         <TextBlock 
@@ -127,7 +137,7 @@
                 Add Category
             </Button>
         </WrapPanel>
-        
+
         <TextBlock Grid.Row="0"
                    Grid.Column="1"
                    x:Name="fileName"
@@ -137,20 +147,6 @@
                    >
 
         </TextBlock>
-
-        <!--
-        <ComboBox 
-            Grid.Row="1"
-            Grid.Column="0"
-            Grid.RowSpan="2"
-            Grid.ColumnSpan="2"
-            Width="150"
-            Height="150"
-            x:Name="expenseDropDownList"
-            IsEditable="True" 
-            MouseDoubleClick="expenseDropDownList_MouseDoubleClick">
-        </ComboBox>
-        -->
     </Grid>
 
 </Window>
