@@ -31,14 +31,14 @@
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
-        <DataGrid AutoGenerateColumns="False" 
+        <DataGrid BorderThickness="10" BorderBrush="Black" AutoGenerateColumns="False" 
                   Name="dataGrid"
                   Grid.Column="1"
                   Grid.RowSpan="3"
                   Grid.Row="1"
                   IsReadOnly="True"
                   MouseDoubleClick="dataGrid_MouseDoubleClick"                 
-                  FrozenColumnCount="1">
+                  FrozenColumnCount="1" >
             <DataGrid.ContextMenu>
                 <ContextMenu x:Name="contextMenu">
                     <MenuItem x:Name="modifySelect" Header="Modify" Click="MenuItem_Click"></MenuItem>
@@ -68,7 +68,7 @@
             Open/Create File
         </Button>
 
-        <GroupBox x:Name="filterGB" Margin="10,6" BorderBrush="Red" Grid.Row="1" Header="Filter">
+        <GroupBox  x:Name="filterGB" Margin="10,6" BorderBrush="Red" Grid.Row="1" Header="Filter">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
