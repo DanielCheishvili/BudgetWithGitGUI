@@ -164,6 +164,8 @@ namespace BudgetWithGitGUI
             dataGrid.Columns.Add(column);
 
         }
+
+        
     }
     public partial class MainWindow : Window
     {
@@ -193,7 +195,7 @@ namespace BudgetWithGitGUI
             }
         }
 
-        #region buttons and checkboxes
+        #region buttons,checkboxes and drop down lists events
         private void openBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
@@ -229,13 +231,14 @@ namespace BudgetWithGitGUI
             contextMenu.IsEnabled = true;
             UpdateDataGrid();
         }
-        #region buttons&checkboxes
+       
         private void addExpenseBtn_Click(object sender, RoutedEventArgs e)
         {
             ExpenseWindow newExpWindow = new ExpenseWindow(homeBudget_,false,-1);
             newExpWindow.ShowDialog();
             UpdateDataGrid();
-         
+            
+
         }
 
         private void addCategoryBtn_Click(object sender, RoutedEventArgs e)
@@ -283,7 +286,7 @@ namespace BudgetWithGitGUI
             
             UpdateDataGrid();
         }
-        #endregion
+        
 
         private void filterByCategoryCB_Click(object sender, RoutedEventArgs e)
         {
@@ -334,8 +337,9 @@ namespace BudgetWithGitGUI
             ExpenseWindow modifyWin = new ExpenseWindow(homeBudget_, false, item.ExpenseID);
             homeBudget_.expenses.Delete(item.ExpenseID);
             UpdateDataGrid();
+            
         }
-        #endregion
+#endregion
         private void ModifyExpenseForm()
         {
             
@@ -350,11 +354,13 @@ namespace BudgetWithGitGUI
                 modifyWin.descriptionText.Text = item.ShortDescription;
                 modifyWin.ShowDialog();
                 UpdateDataGrid();
+                
 
             }
             else
                 return;
            
-        }
+        }       
+    
     }
 }
