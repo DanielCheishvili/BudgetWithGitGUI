@@ -68,14 +68,14 @@ namespace BudgetWithGitGUI
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
 
-            InputFields();
+            InputValidation();
 
         }
         public void InputFields()
         {
             
 
-            InputValidation();
+            
 
             Category category = parent.homeBudget_.categories.GetCategoryFromId(categoryList.SelectedIndex + 1);
 
@@ -127,6 +127,10 @@ namespace BudgetWithGitGUI
             else if (datePicker1.SelectedDate == null)
             {
                 MessageBox.Show("The date is missing", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                InputFields();
             }
         }
         private void buttonUpdate_Click(object sender, RoutedEventArgs e)
