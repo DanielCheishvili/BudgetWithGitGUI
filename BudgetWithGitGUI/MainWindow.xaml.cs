@@ -165,7 +165,7 @@ namespace BudgetWithGitGUI
 
         }
 
-        
+
     }
     public partial class MainWindow : Window
     {
@@ -200,7 +200,7 @@ namespace BudgetWithGitGUI
         {
             OpenFileDialog openFile = new OpenFileDialog();
 
-            
+
             openFile.CheckFileExists = false;
             openFile.CheckPathExists = false;
 
@@ -210,13 +210,13 @@ namespace BudgetWithGitGUI
             openFile.Filter = "DB Files|*.db";
 
             if (openFile.ShowDialog() == true)
-            {       
+            {
                 //opens the database file.
                 _homeBudget = new HomeBudget(openFile.FileName, false);
                 fileName.Text = "Using File: " + openFile.SafeFileName;
-                
+
                 //adds the categories to the drop down menu.
-                categoryDropDownList.ItemsSource = _homeBudget.categories.List();                
+                categoryDropDownList.ItemsSource = _homeBudget.categories.List();
             }
             else
             {
@@ -231,13 +231,13 @@ namespace BudgetWithGitGUI
             contextMenu.IsEnabled = true;
             UpdateDataGrid();
         }
-       
+
         private void addExpenseBtn_Click(object sender, RoutedEventArgs e)
         {
-            ExpenseWindow newExpWindow = new ExpenseWindow(homeBudget_,false,-1);
+            ExpenseWindow newExpWindow = new ExpenseWindow(homeBudget_, false, -1);
             newExpWindow.ShowDialog();
             UpdateDataGrid();
-            
+
 
         }
 
@@ -249,7 +249,7 @@ namespace BudgetWithGitGUI
             categoryDropDownList.ItemsSource = null;
             categoryDropDownList.ItemsSource = _homeBudget.categories.List();
         }
-              
+
         private void categoryDropDownList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             //checks for the selected item and once double click shows the full info of the category
@@ -271,22 +271,22 @@ namespace BudgetWithGitGUI
             {
                 MessageBox.Show("Please select an item from the drop down list before double clicking", "Category Drop down list", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            
+
         }
-        
+
 
         private void byMonthCB_Checked(object sender, RoutedEventArgs e)
         {
-           
+
             UpdateDataGrid();
         }
 
         private void byCategoryCB_Checked(object sender, RoutedEventArgs e)
         {
-            
+
             UpdateDataGrid();
         }
-        
+
 
         private void filterByCategoryCB_Click(object sender, RoutedEventArgs e)
         {
@@ -305,7 +305,7 @@ namespace BudgetWithGitGUI
 
         private void categoryDropDownList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(filterByCategoryCB.IsChecked == true)
+            if (filterByCategoryCB.IsChecked == true)
             {
                 UpdateDataGrid();
             }
@@ -313,7 +313,7 @@ namespace BudgetWithGitGUI
 
         private void dataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if(byCategoryCB.IsChecked == true || byMonthCB.IsChecked == true)
+            if (byCategoryCB.IsChecked == true || byMonthCB.IsChecked == true)
             {
                 e.Handled = false;
             }
@@ -322,8 +322,8 @@ namespace BudgetWithGitGUI
                 e.Handled = true;
                 ModifyExpenseForm();
             }
-           
-            
+
+
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -337,12 +337,19 @@ namespace BudgetWithGitGUI
             ExpenseWindow modifyWin = new ExpenseWindow(homeBudget_, false, item.ExpenseID);
             homeBudget_.expenses.Delete(item.ExpenseID);
             UpdateDataGrid();
-            
+            ResetFocus(dataGrid.SelectedIndex);
+
         }
-#endregion
+        private void searchBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SearchInDataGrid();
+        }
+        #endregion
+
+        #region Helper Functions
         private void ModifyExpenseForm()
         {
-            
+
             BudgetItem item = dataGrid.SelectedItem as BudgetItem;
 
             if (item != null)
@@ -354,13 +361,51 @@ namespace BudgetWithGitGUI
                 modifyWin.descriptionText.Text = item.ShortDescription;
                 modifyWin.ShowDialog();
                 UpdateDataGrid();
-                
+
 
             }
             else
                 return;
-           
-        }       
-    
+
+        }
+
+        private void SearchInDataGrid()
+        {
+            if(searchBox.Text.Contains(""))
+            {
+                MessageBox.Show("No Input Given");
+            }
+            else
+            {
+                foreach(Expense expense in homeBudget_.expenses.List())
+                {
+                    if(dataGrid.Items.Contains(searchBox.Text))
+                    {
+                        MessageBox.Show("FOUND!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("NOT FOUND");
+                    }
+                }
+            }
+        }
+        private void ResetFocus(int index)
+        {
+            if(index >= dataGrid.Items.Count || index < 0)
+            {
+                index = dataGrid.Items.Count - 1;
+            }
+            dataGrid.SelectedIndex = index;
+            dataGrid.Focus();
+
+            if(index != -1)
+            {
+                dataGrid.CurrentCell = new DataGridCellInfo(dataGrid.Items[index], dataGrid.Columns[0]);
+                dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+            }
+        }
+        #endregion
+
     }
 }

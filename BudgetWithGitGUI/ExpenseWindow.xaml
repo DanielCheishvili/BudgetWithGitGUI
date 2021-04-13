@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:local="clr-namespace:BudgetWithGitGUI"
         mc:Ignorable="d"
-        Title="AddExpense" Height="450" Width="800">
+        Title="AddExpense" Height="450" Width="800"
+        Icon="mainLogo.ico">
     <Grid>
 
         <Grid.ColumnDefinitions>
