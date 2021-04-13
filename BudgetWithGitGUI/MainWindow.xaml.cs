@@ -10,7 +10,7 @@ namespace BudgetWithGitGUI
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    
+
     //This class is in charge of dealing with the datagrid and formatting properly
     public partial class MainWindow : Window
     {
@@ -39,11 +39,11 @@ namespace BudgetWithGitGUI
                 modifySelect.IsEnabled = true;
                 DeleteSelect.IsEnabled = true;
             }
-            if(startDatePicker.SelectedDate > endDatePicker.SelectedDate)
+            if (startDatePicker.SelectedDate > endDatePicker.SelectedDate)
             {
                 endDatePicker.SelectedDate = null;
                 MessageBox.Show("The end date cannot be earlier than the start date", "Date Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                
+
             }
 
 
@@ -103,12 +103,16 @@ namespace BudgetWithGitGUI
             column.Header = "Amount";
             column.Binding = new Binding("Amount");
             column.Binding.StringFormat = "F2";
+            Style style = new Style();
+            style.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Right));
+            column.CellStyle = style;
             dataGrid.Columns.Add(column);
 
             column = new DataGridTextColumn();
             column.Header = "Balance";
             column.Binding = new Binding("Balance");
             column.Binding.StringFormat = "F2";
+            column.CellStyle = style;
             dataGrid.Columns.Add(column);
 
         }
@@ -125,6 +129,9 @@ namespace BudgetWithGitGUI
             column.Header = "Total";
             column.Binding = new Binding("Total");
             column.Binding.StringFormat = "F2";
+            Style style = new Style();
+            style.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Right));
+            column.CellStyle = style;
             dataGrid.Columns.Add(column);
         }
         private void CreateSummaryByCategoryGrid()
@@ -139,6 +146,9 @@ namespace BudgetWithGitGUI
             column.Header = "Total";
             column.Binding = new Binding("Total");
             column.Binding.StringFormat = "F2";
+            Style style = new Style();
+            style.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Right));
+            column.CellStyle = style;
             dataGrid.Columns.Add(column);
         }
         private void CreateSummaryByCategoryAndMonthGrid()
@@ -161,6 +171,9 @@ namespace BudgetWithGitGUI
             column.Header = "Total";
             column.Binding = new Binding("[Total]");
             column.Binding.StringFormat = "F2";
+            Style style = new Style();
+            style.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Right));
+            column.CellStyle = style;
             dataGrid.Columns.Add(column);
 
         }
@@ -170,6 +183,7 @@ namespace BudgetWithGitGUI
     public partial class MainWindow : Window
     {
         private HomeBudget _homeBudget;
+        private int currentIndex;
         public MainWindow()
         {
             InitializeComponent();
@@ -181,6 +195,8 @@ namespace BudgetWithGitGUI
             summaryGB.IsEnabled = false;
             fileName.Visibility = Visibility.Hidden;
             contextMenu.IsEnabled = false;
+            searchBox.IsEnabled = false;
+            searchBtn.IsEnabled = false;
 
         }
         public HomeBudget homeBudget_
@@ -227,9 +243,15 @@ namespace BudgetWithGitGUI
             filterGB.IsEnabled = true;
             summaryGB.IsEnabled = true;
             fileName.Visibility = Visibility.Visible;
-            openBtn.Visibility = Visibility.Hidden;
+            //openBtn.Visibility = Visibility.Hidden;
             contextMenu.IsEnabled = true;
+            searchBox.IsEnabled = true;
+            searchBtn.IsEnabled = true;
             UpdateDataGrid();
+        }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            homeBudget_.CloseDB();
         }
 
         private void addExpenseBtn_Click(object sender, RoutedEventArgs e)
@@ -237,8 +259,6 @@ namespace BudgetWithGitGUI
             ExpenseWindow newExpWindow = new ExpenseWindow(homeBudget_, false, -1);
             newExpWindow.ShowDialog();
             UpdateDataGrid();
-
-
         }
 
         private void addCategoryBtn_Click(object sender, RoutedEventArgs e)
@@ -334,15 +354,22 @@ namespace BudgetWithGitGUI
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
             BudgetItem item = dataGrid.SelectedItem as BudgetItem;
+            int temp = dataGrid.SelectedIndex;
             ExpenseWindow modifyWin = new ExpenseWindow(homeBudget_, false, item.ExpenseID);
-            homeBudget_.expenses.Delete(item.ExpenseID);
+            homeBudget_.expenses.Delete(item.ExpenseID);    
             UpdateDataGrid();
-            ResetFocus(dataGrid.SelectedIndex);
+            ResetFocus(temp);
+
+
 
         }
         private void searchBtn_Click(object sender, RoutedEventArgs e)
         {
             SearchInDataGrid();
+        }
+        private void searchBox_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            currentIndex = 0;
         }
         #endregion
 
@@ -371,35 +398,66 @@ namespace BudgetWithGitGUI
 
         private void SearchInDataGrid()
         {
-            if(searchBox.Text.Contains(""))
+            if (searchBox.Text.Equals(""))
+                return;
+            int count = 0;   
+            
+            //iterates through all the data grid items
+            for (int i = currentIndex; i < dataGrid.Items.Count; i++)
             {
-                MessageBox.Show("No Input Given");
-            }
-            else
-            {
-                foreach(Expense expense in homeBudget_.expenses.List())
+
+                BudgetItem item = dataGrid.Items.GetItemAt(i) as BudgetItem;
+                dataGrid.SelectedItem = item;
+
+                //if the string matches the description of current budget item then it
+                //highlights it and scrolls into view
+                if (item.ShortDescription.ToLower().Contains(searchBox.Text.ToLower()))
                 {
-                    if(dataGrid.Items.Contains(searchBox.Text))
+                    dataGrid.Focus();
+                    dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+
+                    //assigns the last value so next time the method is called
+                    //the loop starts on the index after the previous found one.
+                    currentIndex = ++i;
+
+                    //if the next index is out of bounds resets to 0
+                    if(currentIndex == dataGrid.Items.Count)
                     {
-                        MessageBox.Show("FOUND!");
+                        currentIndex = 0;
                     }
-                    else
-                    {
-                        MessageBox.Show("NOT FOUND");
-                    }
+                    return;
                 }
+                //if the loop iterates through the entire datagrid and doesnt find a match
+                else if (count == dataGrid.Items.Count)
+                {
+                    MessageBox.Show("Match Results came back negative", "Search not found", MessageBoxButton.OK,MessageBoxImage.Error);
+                    return;
+                }
+                count++;
+
+                //if it reaches the end the it resets the index to -1 because in the for loop
+                //it does the i++ after therefore if its = to 0 then it would be actually = to 1
+                if (i + 1 == dataGrid.Items.Count)
+                {
+                    i = -1;
+                }
+
+
             }
+
         }
+
+        //sandys code
         private void ResetFocus(int index)
         {
-            if(index >= dataGrid.Items.Count || index < 0)
+            if (index >= dataGrid.Items.Count || index < 0)
             {
                 index = dataGrid.Items.Count - 1;
             }
             dataGrid.SelectedIndex = index;
             dataGrid.Focus();
 
-            if(index != -1)
+            if (index != -1)
             {
                 dataGrid.CurrentCell = new DataGridCellInfo(dataGrid.Items[index], dataGrid.Columns[0]);
                 dataGrid.ScrollIntoView(dataGrid.SelectedItem);

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BudgetWithGitGUI"
         mc:Ignorable="d"
         Title="HomeBudget" Height="550" Width="1000" MinWidth="1000" MinHeight="550"
-        Icon="mainLogo.ico">
+        Icon="mainLogo.ico" Closing="Window_Closing">
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
              
         <Grid.ColumnDefinitions>
@@ -64,7 +64,8 @@
             Height="20"
             VerticalAlignment="Bottom"
             HorizontalAlignment="Right"
-            x:Name="searchBox">
+            x:Name="searchBox"
+            SelectionChanged="searchBox_SelectionChanged">
 
         </TextBox>
 
@@ -76,18 +77,7 @@
             FontSize="50">
             Home Budget
         </TextBlock>
-        <Button 
-            x:Name="openBtn" 
-            Grid.Column="2" 
-            Grid.Row="1"
-            Grid.RowSpan="3"
-            Width="220" 
-            Height="60" 
-            FontSize="25"
-            FontWeight="Bold"
-            Click="openBtn_Click" >
-            Open/Create File
-        </Button>
+        
 
         <GroupBox  x:Name="filterGB" Margin="10,6" BorderBrush="#ff602f" Grid.Row="1" Header="Filter">
             <Grid>
@@ -156,6 +146,14 @@
                 >
                 Add Category
             </Button>
+            <Button 
+            x:Name="openBtn"            
+            Width="350px"             
+            FontSize="20"
+            Margin="10,5"               
+            Click="openBtn_Click" >
+                Open/Create File
+            </Button>
         </WrapPanel>
 
         <TextBlock Grid.Row="0"
@@ -164,8 +162,8 @@
                    Text="Using File:"
                    VerticalAlignment="Bottom"
                    FontSize="20"
+                   Margin="0,0,170,0"
                    >
-
         </TextBlock>
     </Grid>
 
