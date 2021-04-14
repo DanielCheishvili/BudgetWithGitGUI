@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:local="clr-namespace:BudgetWithGitGUI"
         mc:Ignorable="d"
-        Title="ExpenseWindow" Height="450" Width="800">
+        Title="AddExpense" Height="450" Width="800"
+        Icon="mainLogo.ico">
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -45,6 +46,7 @@
             FontWeight="Bold"
             FontStyle="Italic"
             TextDecorations="underline"
+            x:Name="titleOfWindow"
             />
         <TextBlock  />
 
@@ -70,7 +72,7 @@
             Width="200"
             Height="25"
             HorizontalAlignment="Left"
-            FontSize="20"/>
+            FontSize="15"/>
 
 
 
@@ -92,11 +94,11 @@
             x:Name="amountText"
             Grid.Column="1"
             Grid.Row="2"
-            FontSize="20"
-            Width="170"
+            FontSize="15"
+            Width="200"
             Height="28"
-            HorizontalAlignment="Right" 
-            Margin="0,21,226,21"
+            HorizontalAlignment="Left" 
+            Margin="0,20,0,21"            
             />
 
 
@@ -164,6 +166,44 @@
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
+        <Button
+            x:Name="buttonUpdate"
+            Click="buttonUpdate_Click"
+            Grid.Row="5"
+            Grid.Column="1"
+            Width="100"
+            FontFamily="Tohoma"
+            FontSize="17"
+            Height="30" 
+            Background="#FFF5EDED" 
+            BorderBrush="Black" 
+            BorderThickness="2" 
+           FontWeight="Bold"
+            Content="Update">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button
+            x:Name="buttonDelet"
+            Click="buttonDelet_Click"
+            Grid.Row="5"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Width="100"
+            FontFamily="Tohoma"
+            FontSize="17"
+            Height="30" 
+            Background="#FFF5EDED" 
+            BorderBrush="Black" 
+            BorderThickness="2" 
+           FontWeight="Bold"
+            Content="Delete">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+
 
 
 

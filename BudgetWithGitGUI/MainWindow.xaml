@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BudgetWithGitGUI"
         mc:Ignorable="d"
         Title="HomeBudget" Height="550" Width="1000" MinWidth="1000" MinHeight="550"
-        >
+        Icon="mainLogo.ico" Closing="Window_Closing">
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
              
         <Grid.ColumnDefinitions>
@@ -36,9 +36,40 @@
                   Grid.Column="1"
                   Grid.RowSpan="3"
                   Grid.Row="1"
-                  IsReadOnly="True">
-            
+                  IsReadOnly="True"
+                  MouseDoubleClick="dataGrid_MouseDoubleClick"                 
+                  FrozenColumnCount="1" >
+            <DataGrid.ContextMenu>
+                <ContextMenu x:Name="contextMenu">
+                    <MenuItem x:Name="modifySelect" Header="Modify" Click="MenuItem_Click"></MenuItem>
+                    <MenuItem x:Name="DeleteSelect" Header="Delete" Click="MenuItem_Click_1"></MenuItem>
+                    <MenuItem Header="Cancel"></MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
+        <Button Content="search" 
+                Grid.Column="1" 
+                x:Name="searchBtn"
+                Width="60"
+                Height="20"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"
+                Margin="105,0"
+               Click="searchBtn_Click">
+
+        </Button>
+        <TextBox
+            Grid.Column="1"
+            Width="100"
+            Height="20"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Right"
+            x:Name="searchBox"
+            SelectionChanged="searchBox_SelectionChanged">
+
+        </TextBox>
+
+
         <TextBlock 
             Margin="10"
             HorizontalAlignment="Left"
@@ -46,20 +77,9 @@
             FontSize="50">
             Home Budget
         </TextBlock>
-        <Button 
-            x:Name="openBtn" 
-            Grid.Column="2" 
-            Grid.Row="1"
-            Grid.RowSpan="3"
-            Width="220" 
-            Height="60" 
-            FontSize="25"
-            FontWeight="Bold"
-            Click="openBtn_Click" >
-            Open/Create File
-        </Button>
+        
 
-        <GroupBox x:Name="filterGB" Margin="10,6" BorderBrush="Red" Grid.Row="1" Header="Filter">
+        <GroupBox  x:Name="filterGB" Margin="10,6" BorderBrush="#ff602f" Grid.Row="1" Header="Filter">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
@@ -70,13 +90,20 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <TextBlock VerticalAlignment="Bottom">Start Date</TextBlock>
-                <DatePicker x:Name="startDatePicker" Grid.Row="1"></DatePicker>
-                <TextBlock Grid.Row="2" VerticalAlignment="Bottom">End Date</TextBlock>
-                <DatePicker x:Name="endDatePicker" Grid.Row="3"></DatePicker>
-                <CheckBox x:Name="filterByCategoryCB" VerticalAlignment="Bottom" Grid.Row="4" HorizontalAlignment="Right" Width="318">Filter by Category</CheckBox>
+                <DatePicker x:Name="startDatePicker" Grid.Row="1" SelectedDateChanged="startDatePicker_SelectedDateChanged"></DatePicker>
+                <TextBlock Grid.Row="2" VerticalAlignment="Bottom" >End Date</TextBlock>
+                <DatePicker x:Name="endDatePicker" Grid.Row="3" SelectedDateChanged="endDatePicker_SelectedDateChanged"></DatePicker>
+                <CheckBox 
+                    x:Name="filterByCategoryCB" 
+                    VerticalAlignment="Bottom" 
+                    Grid.Row="4" 
+                    HorizontalAlignment="Right" 
+                    Width="318"
+                    Click="filterByCategoryCB_Click"
+                    >Filter by Category</CheckBox>
                 <ComboBox 
                     Grid.Row="5"
-                    
+                    SelectionChanged="categoryDropDownList_SelectionChanged"
                     Height="20"
                     x:Name="categoryDropDownList"
                     HorizontalAlignment="Stretch"
@@ -86,7 +113,7 @@
             </Grid>
             
         </GroupBox>
-        <GroupBox x:Name="summaryGB" Margin="10,6" BorderBrush="Red" Grid.Row="2" Header="Summary">
+        <GroupBox x:Name="summaryGB" Margin="10,6" BorderBrush="#ff602f" Grid.Row="2" Header="Summary">
             <Grid>
                 
                 <Grid.RowDefinitions>
@@ -119,31 +146,25 @@
                 >
                 Add Category
             </Button>
+            <Button 
+            x:Name="openBtn"            
+            Width="350px"             
+            FontSize="20"
+            Margin="10,5"               
+            Click="openBtn_Click" >
+                Open/Create File
+            </Button>
         </WrapPanel>
-        
+
         <TextBlock Grid.Row="0"
                    Grid.Column="1"
                    x:Name="fileName"
                    Text="Using File:"
                    VerticalAlignment="Bottom"
                    FontSize="20"
+                   Margin="0,0,170,0"
                    >
-
         </TextBlock>
-
-        <!--
-        <ComboBox 
-            Grid.Row="1"
-            Grid.Column="0"
-            Grid.RowSpan="2"
-            Grid.ColumnSpan="2"
-            Width="150"
-            Height="150"
-            x:Name="expenseDropDownList"
-            IsEditable="True" 
-            MouseDoubleClick="expenseDropDownList_MouseDoubleClick">
-        </ComboBox>
-        -->
     </Grid>
 
 </Window>
