@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:BudgetWithGitGUI"
         xmlns:sys="clr-namespace:System;assembly=System"
         mc:Ignorable="d"
-        Title="New Category" Height="450" Width="600">
+        Title="New Category" Height="450" Width="600"
+        Icon="mainLogo.ico">
     
     <Grid>
         <!--BackGround-->
