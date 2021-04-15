@@ -94,32 +94,6 @@ namespace BudgetWithGitGUI
 
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult results = MessageBox.Show("Do you wish to cancel this operation?", "Category", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (results == MessageBoxResult.Yes)
-            {
-                Close();
-            }
-            else
-            {
-                return;
-            }
-
-        }
-        private void InputValidation()
-        {
-            if (DescriptionBox.Text.Equals(""))
-            {
-                MessageBox.Show("The description is empty", "Missing Description", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (TypeBox.SelectedIndex == -1)
-            {
-                MessageBox.Show("The description is empty", "Missing Type", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-        }
-
 
     }
 }
