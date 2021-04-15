@@ -30,37 +30,6 @@ namespace BudgetWithGitGUI
         {
 
             InputValidation();
-
-            //checks if a category with the same description exists.
-            foreach (Category cat in parent.homeBudget_.categories.List())
-            {
-                if (DescriptionBox.Text == cat.Description)
-                {
-                    MessageBox.Show("The category you are trying to add already exists.");
-                    return;
-                }
-
-            }
-
-            MessageBoxResult results = MessageBox.Show($"You are adding the following category:\n" +
-                $"Description: {DescriptionBox.Text}\n" +
-                $"Type: {(Category.CategoryType)TypeBox.SelectedItem}\n" +
-                $"do you wish the proceed?", "Category", MessageBoxButton.YesNo, MessageBoxImage.Information);
-
-            if (MessageBoxResult.Yes == results)
-            {
-
-                parent.homeBudget_.categories.Add(DescriptionBox.Text, (Category.CategoryType)TypeBox.SelectedIndex + 1);
-            }
-            else
-            {
-                return;
-            }
-
-
-            DescriptionBox.Text = "";
-            TypeBox.SelectedIndex = -1;
-
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -78,14 +47,49 @@ namespace BudgetWithGitGUI
         }
         private void InputValidation()
         {
+            //checks if a category with the same description exists.
+            foreach (Category cat in parent.homeBudget_.categories.List())
+            {
+                if (DescriptionBox.Text == cat.Description)
+                {
+                    MessageBox.Show("The category you are trying to add already exists.");
+                    return;
+                }
+
+            }
             if (DescriptionBox.Text == "")
             {
                 MessageBox.Show("The description is empty", "Missing Description", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else if (TypeBox.SelectedIndex == -1)
             {
-                MessageBox.Show("The description is empty", "Missing Type", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("No selected Category type", "Missing Type", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            else
+            {
+                AddCategory();
+            }
+
+           
+        }
+        private void AddCategory()
+        {
+            MessageBoxResult results = MessageBox.Show($"You are adding the following category:\n" +
+                $"Description: {DescriptionBox.Text}\n" +
+                $"Type: {(Category.CategoryType)TypeBox.SelectedItem}\n" +
+                $"do you wish the proceed?", "Category", MessageBoxButton.YesNo, MessageBoxImage.Information);
+
+            if (MessageBoxResult.Yes == results)
+            {
+
+                parent.homeBudget_.categories.Add(DescriptionBox.Text, (Category.CategoryType)TypeBox.SelectedIndex + 1);
+            }
+            else
+            {
+                return;
+            }
+            DescriptionBox.Text = "";
+            TypeBox.SelectedIndex = -1;
         }
 
 
