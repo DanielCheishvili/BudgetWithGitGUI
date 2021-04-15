@@ -27,6 +27,13 @@ namespace BudgetWithGitGUI
             if (filterByCategoryCB.IsChecked == true)
             {
                 filterFlag = true;
+                searchBox.IsEnabled = true;
+                searchBtn.IsEnabled = true;
+            }
+            else
+            {
+                searchBox.IsEnabled = false;
+                searchBtn.IsEnabled = false;
             }
             if (byCategoryCB.IsChecked == true || byMonthCB.IsChecked == true)
             {
@@ -250,8 +257,7 @@ namespace BudgetWithGitGUI
             fileName.Visibility = Visibility.Visible;
             //openBtn.Visibility = Visibility.Hidden;
             contextMenu.IsEnabled = true;
-            searchBox.IsEnabled = true;
-            searchBtn.IsEnabled = true;
+            
             UpdateDataGrid();
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
