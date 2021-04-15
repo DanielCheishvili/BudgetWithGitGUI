@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BudgetWithGitGUI"
         mc:Ignorable="d"
-        Title="HomeBudget" Height="550" Width="1000" MinWidth="1000" MinHeight="550"
+        Title="Home Budget" Height="550" Width="1000" MinWidth="1000" MinHeight="550"
         Icon="mainLogo.ico" Closing="Window_Closing">
+    
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-             
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="350px"/> 
             <ColumnDefinition Width="5*"/>
@@ -31,6 +32,7 @@
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
+        
         <DataGrid AutoGenerateColumns="False" 
                   Name="dataGrid"
                   Grid.Column="1"
@@ -38,7 +40,8 @@
                   Grid.Row="1"
                   IsReadOnly="True"
                   MouseDoubleClick="dataGrid_MouseDoubleClick"                 
-                  FrozenColumnCount="1" >
+                  FrozenColumnCount="1" 
+                  SelectionChanged="dataGrid_SelectionChanged">
             <DataGrid.ContextMenu>
                 <ContextMenu x:Name="contextMenu">
                     <MenuItem x:Name="modifySelect" Header="Modify" Click="MenuItem_Click"></MenuItem>

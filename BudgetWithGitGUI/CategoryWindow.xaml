@@ -20,7 +20,7 @@
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
-        <Grid>
+        <Grid Margin="20,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*"/>
                 <RowDefinition Height="1*"/>
