@@ -1,5 +1,6 @@
 ﻿using Budget;
 using Microsoft.Win32;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -219,6 +220,7 @@ namespace BudgetWithGitGUI
         {
             OpenFileDialog openFile = new OpenFileDialog();
 
+            openFile.Title = "Open/Create Homebudget";
 
             openFile.CheckFileExists = false;
             openFile.CheckPathExists = false;
@@ -254,16 +256,20 @@ namespace BudgetWithGitGUI
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if(homeBudget_ != null)
+
+            
+            if (homeBudget_ != null)
                 homeBudget_.CloseDB();
+
         }
 
         private void addExpenseBtn_Click(object sender, RoutedEventArgs e)
         {
             ExpenseWindow newExpWindow = new ExpenseWindow(homeBudget_, false, -1);
             newExpWindow.ShowDialog();
-            UpdateDataGrid();
+            UpdateDataGrid();         
         }
+       
 
         private void addCategoryBtn_Click(object sender, RoutedEventArgs e)
         {

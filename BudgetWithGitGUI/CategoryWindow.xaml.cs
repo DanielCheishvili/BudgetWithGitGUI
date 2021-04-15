@@ -30,7 +30,23 @@ namespace BudgetWithGitGUI
         {
 
             InputValidation();
+        }
 
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult results = MessageBox.Show("Do you wish to cancel this operation?", "Category", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (results == MessageBoxResult.Yes)
+            {
+                Close();
+            }
+            else
+            {
+                return;
+            }
+
+        }
+        private void InputValidation()
+        {
             //checks if a category with the same description exists.
             foreach (Category cat in parent.homeBudget_.categories.List())
             {
@@ -41,7 +57,23 @@ namespace BudgetWithGitGUI
                 }
 
             }
+            if (DescriptionBox.Text == "")
+            {
+                MessageBox.Show("The description is empty", "Missing Description", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (TypeBox.SelectedIndex == -1)
+            {
+                MessageBox.Show("No selected Category type", "Missing Type", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                AddCategory();
+            }
 
+           
+        }
+        private void AddCategory()
+        {
             MessageBoxResult results = MessageBox.Show($"You are adding the following category:\n" +
                 $"Description: {DescriptionBox.Text}\n" +
                 $"Type: {(Category.CategoryType)TypeBox.SelectedItem}\n" +
@@ -56,10 +88,9 @@ namespace BudgetWithGitGUI
             {
                 return;
             }
-
-
             DescriptionBox.Text = "";
             TypeBox.SelectedIndex = -1;
+
 
         }
 
@@ -86,6 +117,7 @@ namespace BudgetWithGitGUI
             {
                 MessageBox.Show("The description is empty", "Missing Type", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
         }
 
 
