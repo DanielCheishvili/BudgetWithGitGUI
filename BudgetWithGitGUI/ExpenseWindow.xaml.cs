@@ -40,7 +40,7 @@ namespace BudgetWithGitGUI
             if (isModified == true && expenseId != -1)
             {
 
-                Title = "ModifyExpense";
+                Title = "Modify Expense";
                 buttonUpdate.Visibility = Visibility.Visible;
                 buttonDelet.Visibility = Visibility.Visible;
                 buttonSave.Visibility = Visibility.Hidden;
@@ -77,11 +77,11 @@ namespace BudgetWithGitGUI
 
             DateTime datetime = datePicker1.SelectedDate ?? DateTime.Now;
             MessageBoxResult result = MessageBox.Show($@"You are adding the following Expense:
-                                Description: {descriptionText.Text}
-                                Amount: {amountText.Text}
-                                Category: {categoryList.SelectedItem}
-                                Date: {datetime.ToString("yyyy-MM-dd")}",
-                "Home Budget", MessageBoxButton.YesNo, MessageBoxImage.Information);
+Description: {descriptionText.Text}
+Amount: {amountText.Text}
+Category: {categoryList.SelectedItem}
+Date: {datetime.ToString("yyyy-MM-dd")}",
+"Home Budget", MessageBoxButton.YesNo, MessageBoxImage.Information);
 
 
             if (result == MessageBoxResult.Yes)
@@ -98,6 +98,7 @@ namespace BudgetWithGitGUI
 
                 descriptionText.Text = "";
                 amountText.Text = "";
+
 
             }
             else
