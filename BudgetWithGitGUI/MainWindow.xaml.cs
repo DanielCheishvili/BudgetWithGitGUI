@@ -178,7 +178,10 @@ namespace BudgetWithGitGUI
 
         }
 
-
+        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            currentIndex = dataGrid.SelectedIndex;
+        }
     }
     public partial class MainWindow : Window
     {
@@ -251,7 +254,8 @@ namespace BudgetWithGitGUI
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            homeBudget_.CloseDB();
+            if(homeBudget_ != null)
+                homeBudget_.CloseDB();
         }
 
         private void addExpenseBtn_Click(object sender, RoutedEventArgs e)
@@ -369,7 +373,10 @@ namespace BudgetWithGitGUI
         }
         private void searchBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            currentIndex = 0;
+            if(dataGrid.SelectedItem != null)
+                currentIndex = dataGrid.SelectedIndex;
+            else
+                currentIndex = 0;
         }
         #endregion
 
@@ -398,7 +405,7 @@ namespace BudgetWithGitGUI
 
         private void SearchInDataGrid()
         {
-            if (searchBox.Text.Equals(""))
+            if (searchBox.Text.Equals("") || byCategoryCB.IsChecked == true || byMonthCB.IsChecked == true)
                 return;
             int count = 0;   
             
@@ -411,7 +418,7 @@ namespace BudgetWithGitGUI
 
                 //if the string matches the description of current budget item then it
                 //highlights it and scrolls into view
-                if (item.ShortDescription.ToLower().Contains(searchBox.Text.ToLower()))
+                if (item.ShortDescription.ToLower().Contains(searchBox.Text.ToLower()) || item.Amount.ToString("F").Contains(searchBox.Text))
                 {
                     dataGrid.Focus();
                     dataGrid.ScrollIntoView(dataGrid.SelectedItem);

@@ -40,7 +40,7 @@ namespace BudgetWithGitGUI
             if (isModified == true && expenseId != -1)
             {
 
-                Title = "ModifyExpense";
+                Title = "Modify Expense";
                 buttonUpdate.Visibility = Visibility.Visible;
                 buttonDelet.Visibility = Visibility.Visible;
                 buttonSave.Visibility = Visibility.Hidden;

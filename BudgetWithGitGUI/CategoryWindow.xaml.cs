@@ -78,7 +78,7 @@ namespace BudgetWithGitGUI
         }
         private void InputValidation()
         {
-            if (DescriptionBox.Text == "")
+            if (DescriptionBox.Text.Equals(""))
             {
                 MessageBox.Show("The description is empty", "Missing Description", MessageBoxButton.OK, MessageBoxImage.Error);
             }
