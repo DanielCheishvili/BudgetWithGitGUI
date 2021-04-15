@@ -30,15 +30,12 @@ namespace BudgetWithGitGUI
                 searchBox.IsEnabled = true;
                 searchBtn.IsEnabled = true;
             }
-            else
-            {
-                searchBox.IsEnabled = false;
-                searchBtn.IsEnabled = false;
-            }
             if (byCategoryCB.IsChecked == true || byMonthCB.IsChecked == true)
             {
                 modifySelect.IsEnabled = false;
                 DeleteSelect.IsEnabled = false;
+                searchBox.IsEnabled = false;
+                searchBtn.IsEnabled = false;
 
 
             }
@@ -46,6 +43,8 @@ namespace BudgetWithGitGUI
             {
                 modifySelect.IsEnabled = true;
                 DeleteSelect.IsEnabled = true;
+                searchBox.IsEnabled = true;
+                searchBtn.IsEnabled = true;
             }
             if (startDatePicker.SelectedDate > endDatePicker.SelectedDate)
             {
@@ -173,23 +172,23 @@ namespace BudgetWithGitGUI
                 column = new DataGridTextColumn();
                 column.Header = category.Description;
                 column.Binding = new Binding("[" + category.Description + "]");
+                Style style = new Style();
+                style.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Right));
+                column.CellStyle = style;
                 dataGrid.Columns.Add(column);
             }
             column = new DataGridTextColumn();
             column.Header = "Total";
             column.Binding = new Binding("[Total]");
             column.Binding.StringFormat = "F2";
-            Style style = new Style();
-            style.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Right));
-            column.CellStyle = style;
+            Style style2 = new Style();
+            style2.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Right));
+            column.CellStyle = style2;
             dataGrid.Columns.Add(column);
 
         }
 
-        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            currentIndex = dataGrid.SelectedIndex;
-        }
+        
     }
     public partial class MainWindow : Window
     {
@@ -199,7 +198,6 @@ namespace BudgetWithGitGUI
         {
             InitializeComponent();
 
-            //Upon starting the application all the buttons except the open file one are invisible until you open the file.
             addCategory.IsEnabled = false;
             addExpense.IsEnabled = false;
             filterGB.IsEnabled = false;
@@ -222,10 +220,12 @@ namespace BudgetWithGitGUI
             }
         }
 
-        #region buttons,checkboxes and drop down lists events
+        #region Events
         private void openBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
+
+            string fileFilter = "DB Files|*.db";
 
             openFile.Title = "Open/Create Homebudget";
 
@@ -235,7 +235,8 @@ namespace BudgetWithGitGUI
             //opens the directory where the file was last used.
             openFile.RestoreDirectory = true;
 
-            openFile.Filter = "DB Files|*.db";
+            openFile.Filter = fileFilter;
+            
 
             if (openFile.ShowDialog() == true)
             {
@@ -255,25 +256,22 @@ namespace BudgetWithGitGUI
             filterGB.IsEnabled = true;
             summaryGB.IsEnabled = true;
             fileName.Visibility = Visibility.Visible;
-            //openBtn.Visibility = Visibility.Hidden;
             contextMenu.IsEnabled = true;
             
             UpdateDataGrid();
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
-            
             if (homeBudget_ != null)
                 homeBudget_.CloseDB();
-
         }
 
         private void addExpenseBtn_Click(object sender, RoutedEventArgs e)
         {
             ExpenseWindow newExpWindow = new ExpenseWindow(homeBudget_, false, -1);
             newExpWindow.ShowDialog();
-            UpdateDataGrid();         
+            UpdateDataGrid();
+            ResetFocus(dataGrid.Items.Count - 1);
         }
        
 
@@ -362,11 +360,13 @@ namespace BudgetWithGitGUI
 
         }
 
+        //modifying an expense on right click
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             ModifyExpenseForm();
         }
 
+        //delete an expense on right click
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
             BudgetItem item = dataGrid.SelectedItem as BudgetItem;
@@ -389,6 +389,10 @@ namespace BudgetWithGitGUI
                 currentIndex = dataGrid.SelectedIndex;
             else
                 currentIndex = 0;
+        }
+        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            currentIndex = dataGrid.SelectedIndex;
         }
         #endregion
 
@@ -417,8 +421,9 @@ namespace BudgetWithGitGUI
 
         private void SearchInDataGrid()
         {
-            if (searchBox.Text.Equals("") || byCategoryCB.IsChecked == true || byMonthCB.IsChecked == true)
+            if (searchBox.Text.Equals(""))
                 return;
+            
             int count = 0;   
             
             //iterates through all the data grid items
@@ -428,7 +433,7 @@ namespace BudgetWithGitGUI
                 BudgetItem item = dataGrid.Items.GetItemAt(i) as BudgetItem;
                 dataGrid.SelectedItem = item;
 
-                //if the string matches the description of current budget item then it
+                //if the string matches the description or the amount of current budget item then it
                 //highlights it and scrolls into view
                 if (item.ShortDescription.ToLower().Contains(searchBox.Text.ToLower()) || item.Amount.ToString("F").Contains(searchBox.Text))
                 {
