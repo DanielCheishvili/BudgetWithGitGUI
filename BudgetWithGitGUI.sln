@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetWithGitGUI", "BudgetW
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "setup", "setup\setup.vdproj", "{4FC78B8F-84F4-4470-9697-17F924588E1C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeBudgetTesting", "HomeBudgetTesting\HomeBudgetTesting.csproj", "{889CE503-2ABF-4A8C-BA88-1DBC8E23A08A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{6A806C76-EC7D-44E7-B236-1F47194CF22D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4FC78B8F-84F4-4470-9697-17F924588E1C}.Debug|Any CPU.ActiveCfg = Debug
 		{4FC78B8F-84F4-4470-9697-17F924588E1C}.Release|Any CPU.ActiveCfg = Release
+		{889CE503-2ABF-4A8C-BA88-1DBC8E23A08A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{889CE503-2ABF-4A8C-BA88-1DBC8E23A08A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{889CE503-2ABF-4A8C-BA88-1DBC8E23A08A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{889CE503-2ABF-4A8C-BA88-1DBC8E23A08A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
