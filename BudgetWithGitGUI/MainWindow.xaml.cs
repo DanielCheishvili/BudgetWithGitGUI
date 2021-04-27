@@ -5,16 +5,57 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-
+using System.Collections.Generic;
 namespace BudgetWithGitGUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
 
-    //This class is in charge of dealing with the datagrid and formatting properly
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IDataView
     {
+        private HomeBudget _homeBudget;
+        private int currentIndex;
+        private DataPresenter presenter;
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            addCategory.IsEnabled = false;
+            addExpense.IsEnabled = false;
+            filterGB.IsEnabled = false;
+            summaryGB.IsEnabled = false;
+            fileName.Visibility = Visibility.Hidden;
+            contextMenu.IsEnabled = false;
+            searchBox.IsEnabled = false;
+            searchBtn.IsEnabled = false;
+            presenter = new DataPresenter(this);
+
+
+        }
+        public HomeBudget homeBudget_
+        {
+            get
+            {
+                return _homeBudget;
+            }
+            set
+            {
+                _homeBudget = value;
+            }
+        }
+
+        public DataPresenter presnter
+        { 
+            get => throw new NotImplementedException(); 
+            set => throw new NotImplementedException(); 
+        }
+        public List<Object> DataSource 
+        { 
+            get => throw new NotImplementedException(); 
+            set => throw new NotImplementedException(); 
+        }
+        #region DataGrid
         private void UpdateDataGrid()
         {
 
@@ -86,7 +127,7 @@ namespace BudgetWithGitGUI
         }
 
         //https://stackoverflow.com/questions/704724/programmatically-add-column-rows-to-wpf-datagrid
-        private void CreateDefaultDataGrid()
+        public void CreateDefaultDataGrid()
         {
 
             dataGrid.Columns.Clear();
@@ -123,7 +164,7 @@ namespace BudgetWithGitGUI
             dataGrid.Columns.Add(column);
 
         }
-        private void CreateSummaryByMonthGrid()
+        public void CreateSummaryByMonthGrid()
         {
             dataGrid.Columns.Clear();
             DataGridTextColumn column = new DataGridTextColumn();
@@ -141,7 +182,7 @@ namespace BudgetWithGitGUI
             column.CellStyle = style;
             dataGrid.Columns.Add(column);
         }
-        private void CreateSummaryByCategoryGrid()
+        public void CreateSummaryByCategoryGrid()
         {
             dataGrid.Columns.Clear();
             DataGridTextColumn column = new DataGridTextColumn();
@@ -158,7 +199,7 @@ namespace BudgetWithGitGUI
             column.CellStyle = style;
             dataGrid.Columns.Add(column);
         }
-        private void CreateSummaryByCategoryAndMonthGrid()
+        public void CreateSummaryByCategoryAndMonthGrid()
         {
             dataGrid.Columns.Clear();
             DataGridTextColumn column = new DataGridTextColumn();
@@ -187,42 +228,10 @@ namespace BudgetWithGitGUI
             dataGrid.Columns.Add(column);
 
         }
-
-        
-    }
-    public partial class MainWindow : Window
-    {
-        private HomeBudget _homeBudget;
-        private int currentIndex;
-        public MainWindow()
-        {
-            InitializeComponent();
-
-            addCategory.IsEnabled = false;
-            addExpense.IsEnabled = false;
-            filterGB.IsEnabled = false;
-            summaryGB.IsEnabled = false;
-            fileName.Visibility = Visibility.Hidden;
-            contextMenu.IsEnabled = false;
-            searchBox.IsEnabled = false;
-            searchBtn.IsEnabled = false;
-
-        }
-        public HomeBudget homeBudget_
-        {
-            get
-            {
-                return _homeBudget;
-            }
-            set
-            {
-                _homeBudget = value;
-            }
-        }
-
+        #endregion
         #region Events
         private void openBtn_Click(object sender, RoutedEventArgs e)
-        {
+        {  
             OpenFileDialog openFile = new OpenFileDialog();
 
             string fileFilter = "DB Files|*.db";
@@ -311,8 +320,10 @@ namespace BudgetWithGitGUI
 
         private void byMonthCB_Checked(object sender, RoutedEventArgs e)
         {
+            // presenter.FiltersHaveChanged(stDate, endDate..., BymonthCB.isChecked, ByCategoryCB.isChecked)
+            presenter.FiltersHaveChanged((DateTime)startDatePicker.SelectedDate, (DateTime)endDatePicker.SelectedDate, (bool)filterByCategoryCB.IsChecked, dataGrid.SelectedIndex, (bool)byMonthCB.IsChecked, (bool)byCategoryCB.IsChecked);
+            
 
-            UpdateDataGrid();
         }
 
         private void byCategoryCB_Checked(object sender, RoutedEventArgs e)
@@ -418,8 +429,10 @@ namespace BudgetWithGitGUI
                 return;
 
         }
-
-        private void SearchInDataGrid()
+        public void DataClear()
+        {
+        }
+        public void SearchInDataGrid()
         {
             if (searchBox.Text.Equals(""))
                 return;
@@ -472,7 +485,7 @@ namespace BudgetWithGitGUI
         }
 
         //sandys code
-        private void ResetFocus(int index)
+        public void ResetFocus(int index)
         {
             if (index >= dataGrid.Items.Count || index < 0)
             {
