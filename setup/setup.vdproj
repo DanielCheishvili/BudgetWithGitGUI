@@ -87,26 +87,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_ACD3AF7E53844B4DBFA69B27D051A9EC"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_AF4C2B0A8B332DEAB2A48428786FE7D4"
         "OwnerKey" = "8:_EADE96CE31134361BA3D7930F8C9383A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_EADE96CE31134361BA3D7930F8C9383A"
+        "MsmKey" = "8:_C945EEB362D442518FF12A1DEB73CEA0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_95DA538F14F11E3E33AF1023B972DA29"
+        "MsmKey" = "8:_EADE96CE31134361BA3D7930F8C9383A"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -151,6 +145,12 @@
         "OwnerKey" = "8:_950703106AA3C98A7D91878CDAAADB40"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_95DA538F14F11E3E33AF1023B972DA29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -176,6 +176,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -200,6 +208,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -436,26 +452,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ACD3AF7E53844B4DBFA69B27D051A9EC"
-            {
-            "SourcePath" = "8:..\\BudgetWithGitGUI\\bin\\Debug\\x86\\SQLite.Interop.dll"
-            "TargetName" = "8:SQLite.Interop.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_9B70CFBA60DA462CA514ED6B28D66E3D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AF4C2B0A8B332DEAB2A48428786FE7D4"
             {
             "AssemblyRegister" = "3:1"
@@ -485,6 +481,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C945EEB362D442518FF12A1DEB73CEA0"
+            {
+            "SourcePath" = "8:..\\BudgetWithGitGUI\\bin\\Release\\x86\\SQLite.Interop.dll"
+            "TargetName" = "8:SQLite.Interop.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_9B70CFBA60DA462CA514ED6B28D66E3D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
         }
@@ -555,7 +571,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:HomeBudget"
         "ProductCode" = "8:{EEA77FA7-9715-489B-AC29-E3AF379D5946}"
-        "PackageCode" = "8:{0F1A4414-9E77-4D6B-BD2E-CB5C2854B57C}"
+        "PackageCode" = "8:{7297A368-5201-4C67-A2F5-B6EBA99CC390}"
         "UpgradeCode" = "8:{2ED6B84D-680D-4B73-A3AB-A3110877F2FE}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1104,7 +1120,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_EADE96CE31134361BA3D7930F8C9383A"
             {
-            "SourcePath" = "8:..\\BudgetWithGitGUI\\obj\\Debug\\BudgetWithGitGUI.exe"
+            "SourcePath" = "8:..\\BudgetWithGitGUI\\obj\\Release\\BudgetWithGitGUI.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_9B70CFBA60DA462CA514ED6B28D66E3D"
