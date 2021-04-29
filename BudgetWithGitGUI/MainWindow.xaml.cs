@@ -6,6 +6,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace BudgetWithGitGUI
 {
     /// <summary>
@@ -46,14 +48,27 @@ namespace BudgetWithGitGUI
         }
 
         public DataPresenter presnter
-        { 
-            get => throw new NotImplementedException(); 
-            set => throw new NotImplementedException(); 
+        {
+            get
+            {
+                return presenter;
+            }
+            set
+            {
+                presenter = value;
+            }
         }
         public List<Object> DataSource 
-        { 
-            get => throw new NotImplementedException(); 
-            set => throw new NotImplementedException(); 
+        {
+            get
+            {
+
+                return dataGrid.ItemsSource.Cast<object>().ToList();
+            }
+            set
+            {
+                dataGrid.ItemsSource = value;
+            }
         }
         #region DataGrid
         private void UpdateDataGrid()
@@ -320,10 +335,8 @@ namespace BudgetWithGitGUI
 
         private void byMonthCB_Checked(object sender, RoutedEventArgs e)
         {
-            // presenter.FiltersHaveChanged(stDate, endDate..., BymonthCB.isChecked, ByCategoryCB.isChecked)
-            presenter.FiltersHaveChanged((DateTime)startDatePicker.SelectedDate, (DateTime)endDatePicker.SelectedDate, (bool)filterByCategoryCB.IsChecked, dataGrid.SelectedIndex, (bool)byMonthCB.IsChecked, (bool)byCategoryCB.IsChecked);
-            
-
+           
+            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate,filterByCategoryCB.IsChecked == true, dataGrid.SelectedIndex, byMonthCB.IsChecked == true );
         }
 
         private void byCategoryCB_Checked(object sender, RoutedEventArgs e)
