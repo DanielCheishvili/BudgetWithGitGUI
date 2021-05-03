@@ -102,7 +102,7 @@
                     Grid.Row="4" 
                     HorizontalAlignment="Right" 
                     Width="318"
-                    Click="filterByCategoryCB_Click"
+                    Click="byMonthCB_Checked"
                     >Filter by Category</CheckBox>
                 <ComboBox 
                     Grid.Row="5"
@@ -129,7 +129,7 @@
                           Click="byMonthCB_Checked"
                           >By Month
                 </CheckBox>
-                <CheckBox x:Name="byCategoryCB" Grid.Row="1"  Click="byCategoryCB_Checked">By Category</CheckBox>
+                <CheckBox x:Name="byCategoryCB" Grid.Row="1"  Click="byMonthCB_Checked">By Category</CheckBox>
                 
             </Grid>
 

@@ -19,6 +19,9 @@ namespace BudgetWithGitGUI
         private HomeBudget _homeBudget;
         private int currentIndex;
         private DataPresenter presenter;
+        public string fileNamePresenter;
+
+        //make a getter for filename. public, call it datapresenter
         public MainWindow()
         {
             InitializeComponent();
@@ -34,6 +37,17 @@ namespace BudgetWithGitGUI
             presenter = new DataPresenter(this);
 
 
+        }
+        public string FileNamePresenter
+        {
+            get
+            {
+                return fileNamePresenter;
+            }
+            set
+            {
+                fileNamePresenter = value;
+            }
         }
         public HomeBudget homeBudget_
         {
@@ -111,7 +125,7 @@ namespace BudgetWithGitGUI
 
 
 
-            if (byCategoryCB.IsChecked == false && byMonthCB.IsChecked == false)
+         /*   if (byCategoryCB.IsChecked == false && byMonthCB.IsChecked == false)
             {
 
                 CreateDefaultDataGrid();
@@ -138,7 +152,7 @@ namespace BudgetWithGitGUI
                 dataGrid.ItemsSource = null;
                 dataGrid.ItemsSource = homeBudget_.GetBudgetDictionaryByCategoryAndMonth(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
 
-            }
+            }*/
         }
 
         //https://stackoverflow.com/questions/704724/programmatically-add-column-rows-to-wpf-datagrid
@@ -266,7 +280,8 @@ namespace BudgetWithGitGUI
             {
                 //opens the database file.
                 _homeBudget = new HomeBudget(openFile.FileName, false);
-                fileName.Text = "Using File: " + openFile.SafeFileName;
+                fileName.Text = openFile.SafeFileName;
+                FileNamePresenter = fileName.Text;
 
                 //adds the categories to the drop down menu.
                 categoryDropDownList.ItemsSource = _homeBudget.categories.List();
@@ -335,30 +350,21 @@ namespace BudgetWithGitGUI
 
         private void byMonthCB_Checked(object sender, RoutedEventArgs e)
         {
-           
-            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate,filterByCategoryCB.IsChecked == true, dataGrid.SelectedIndex, byMonthCB.IsChecked == true );
+            //UpdateDataGrid();
+            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate,filterByCategoryCB.IsChecked == true, dataGrid.SelectedIndex, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
         }
 
-        private void byCategoryCB_Checked(object sender, RoutedEventArgs e)
-        {
-
-            UpdateDataGrid();
-        }
-
-
-        private void filterByCategoryCB_Click(object sender, RoutedEventArgs e)
-        {
-            UpdateDataGrid();
-        }
 
         private void startDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateDataGrid();
+            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, dataGrid.SelectedIndex, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
+
         }
 
         private void endDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateDataGrid();
+            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, dataGrid.SelectedIndex, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
+
         }
 
         private void categoryDropDownList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -403,6 +409,7 @@ namespace BudgetWithGitGUI
 
 
         }
+        //presenter.
         private void searchBtn_Click(object sender, RoutedEventArgs e)
         {
             SearchInDataGrid();
@@ -444,6 +451,7 @@ namespace BudgetWithGitGUI
         }
         public void DataClear()
         {
+
         }
         public void SearchInDataGrid()
         {
