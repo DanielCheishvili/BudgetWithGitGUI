@@ -14,12 +14,13 @@ namespace BudgetWithGitGUI
     /// Interaction logic for MainWindow.xaml
     /// </summary>
 
-    public partial class MainWindow : Window, IDataView
+    public partial class MainWindow : Window
     {
         private HomeBudget _homeBudget;
         private int currentIndex;
         private DataPresenter presenter;
         public string fileNamePresenter;
+        public DataView datagridView;
 
         //make a getter for filename. public, call it datapresenter
         public MainWindow()
@@ -35,6 +36,8 @@ namespace BudgetWithGitGUI
             searchBox.IsEnabled = false;
             searchBtn.IsEnabled = false;
             presenter = new DataPresenter(this);
+            datagridView = dataGridMainWindow;
+            datagridView.presnter = presnter;
 
 
         }
@@ -85,78 +88,10 @@ namespace BudgetWithGitGUI
             }
         }
         #region DataGrid
-        private void UpdateDataGrid()
-        {
-
-            bool filterFlag = false;
-            int id = -1;
-            if (categoryDropDownList.SelectedIndex > -1)
-            {
-                id = ((Category)categoryDropDownList.SelectedItem).Id;
-            }
-            if (filterByCategoryCB.IsChecked == true)
-            {
-                filterFlag = true;
-                searchBox.IsEnabled = true;
-                searchBtn.IsEnabled = true;
-            }
-            if (byCategoryCB.IsChecked == true || byMonthCB.IsChecked == true)
-            {
-                modifySelect.IsEnabled = false;
-                DeleteSelect.IsEnabled = false;
-                searchBox.IsEnabled = false;
-                searchBtn.IsEnabled = false;
-
-
-            }
-            else
-            {
-                modifySelect.IsEnabled = true;
-                DeleteSelect.IsEnabled = true;
-                searchBox.IsEnabled = true;
-                searchBtn.IsEnabled = true;
-            }
-            if (startDatePicker.SelectedDate > endDatePicker.SelectedDate)
-            {
-                endDatePicker.SelectedDate = null;
-                MessageBox.Show("The end date cannot be earlier than the start date", "Date Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-            }
-
-
-
-         /*   if (byCategoryCB.IsChecked == false && byMonthCB.IsChecked == false)
-            {
-
-                CreateDefaultDataGrid();
-                dataGrid.ItemsSource = null;
-                dataGrid.ItemsSource = homeBudget_.GetBudgetItems(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
-            }
-
-            if (byCategoryCB.IsChecked == false && byMonthCB.IsChecked == true)
-            {
-                CreateSummaryByMonthGrid();
-                dataGrid.ItemsSource = null;
-                dataGrid.ItemsSource = homeBudget_.GetBudgetItemsByMonth(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
-            }
-            if (byCategoryCB.IsChecked == true && byMonthCB.IsChecked == false)
-            {
-                CreateSummaryByCategoryGrid();
-                dataGrid.ItemsSource = null;
-                dataGrid.ItemsSource = homeBudget_.GetBudgetItemsByCategory(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
-            }
-            if (byCategoryCB.IsChecked == true && byMonthCB.IsChecked == true)
-            {
-
-                CreateSummaryByCategoryAndMonthGrid();
-                dataGrid.ItemsSource = null;
-                dataGrid.ItemsSource = homeBudget_.GetBudgetDictionaryByCategoryAndMonth(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id);
-
-            }*/
-        }
+       
 
         //https://stackoverflow.com/questions/704724/programmatically-add-column-rows-to-wpf-datagrid
-        public void CreateDefaultDataGrid()
+      /*  public void CreateDefaultDataGrid()
         {
 
             dataGrid.Columns.Clear();
@@ -256,7 +191,7 @@ namespace BudgetWithGitGUI
             column.CellStyle = style2;
             dataGrid.Columns.Add(column);
 
-        }
+        }*/
         #endregion
         #region Events
         private void openBtn_Click(object sender, RoutedEventArgs e)
@@ -296,8 +231,9 @@ namespace BudgetWithGitGUI
             summaryGB.IsEnabled = true;
             fileName.Visibility = Visibility.Visible;
             contextMenu.IsEnabled = true;
-            
-            UpdateDataGrid();
+
+            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, -1, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
+
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -309,7 +245,7 @@ namespace BudgetWithGitGUI
         {
             ExpenseWindow newExpWindow = new ExpenseWindow(homeBudget_, false, -1);
             newExpWindow.ShowDialog();
-            UpdateDataGrid();
+            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, -1, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
             ResetFocus(dataGrid.Items.Count - 1);
         }
        
@@ -347,32 +283,67 @@ namespace BudgetWithGitGUI
 
         }
 
-
+        //todo: rename
         private void byMonthCB_Checked(object sender, RoutedEventArgs e)
         {
             //UpdateDataGrid();
-            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate,filterByCategoryCB.IsChecked == true, dataGrid.SelectedIndex, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
+            bool filterFlag = false;
+            
+            if (filterByCategoryCB.IsChecked == true)
+            {
+                filterFlag = true;
+                searchBox.IsEnabled = true;
+                searchBtn.IsEnabled = true;
+            }
+            if (byCategoryCB.IsChecked == true || byMonthCB.IsChecked == true)
+            {
+                modifySelect.IsEnabled = false;
+                DeleteSelect.IsEnabled = false;
+                searchBox.IsEnabled = false;
+                searchBtn.IsEnabled = false;
+
+
+            }
+            else
+            {
+                modifySelect.IsEnabled = true;
+                DeleteSelect.IsEnabled = true;
+                searchBox.IsEnabled = true;
+                searchBtn.IsEnabled = true;
+            }
+            if (startDatePicker.SelectedDate > endDatePicker.SelectedDate)
+            {
+                endDatePicker.SelectedDate = null;
+                MessageBox.Show("The end date cannot be earlier than the start date", "Date Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate,filterFlag, -1, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
         }
 
 
         private void startDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, dataGrid.SelectedIndex, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
+            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, -1, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
 
         }
 
         private void endDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, dataGrid.SelectedIndex, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
+            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, -1, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
 
         }
 
+        //BUG: after re checking the 
         private void categoryDropDownList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (filterByCategoryCB.IsChecked == true)
+            int id = -1;
+            if (categoryDropDownList.SelectedIndex > -1)
             {
-                UpdateDataGrid();
+                id = ((Category)categoryDropDownList.SelectedItem).Id;
             }
+            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, id, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
+
+            
         }
 
         private void dataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -402,8 +373,8 @@ namespace BudgetWithGitGUI
             BudgetItem item = dataGrid.SelectedItem as BudgetItem;
             int temp = dataGrid.SelectedIndex;
             ExpenseWindow modifyWin = new ExpenseWindow(homeBudget_, false, item.ExpenseID);
-            homeBudget_.expenses.Delete(item.ExpenseID);    
-            UpdateDataGrid();
+            homeBudget_.expenses.Delete(item.ExpenseID);
+            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, dataGrid.SelectedIndex, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
             ResetFocus(temp);
 
 
@@ -441,8 +412,7 @@ namespace BudgetWithGitGUI
                 modifyWin.amountText.Text = item.Amount.ToString();
                 modifyWin.descriptionText.Text = item.ShortDescription;
                 modifyWin.ShowDialog();
-                UpdateDataGrid();
-
+                presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, dataGrid.SelectedIndex, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
 
             }
             else

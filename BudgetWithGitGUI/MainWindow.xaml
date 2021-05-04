@@ -32,24 +32,14 @@
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
-        
-        <DataGrid AutoGenerateColumns="False" 
-                  Name="dataGrid"
-                  Grid.Column="1"
-                  Grid.RowSpan="3"
-                  Grid.Row="1"
-                  IsReadOnly="True"
-                  MouseDoubleClick="dataGrid_MouseDoubleClick"                 
-                  FrozenColumnCount="1" 
-                  SelectionChanged="dataGrid_SelectionChanged">
-            <DataGrid.ContextMenu>
-                <ContextMenu x:Name="contextMenu">
-                    <MenuItem x:Name="modifySelect" Header="Modify" Click="MenuItem_Click"></MenuItem>
-                    <MenuItem x:Name="DeleteSelect" Header="Delete" Click="MenuItem_Click_1"></MenuItem>
-                    <MenuItem Header="Cancel"></MenuItem>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-        </DataGrid>
+
+        <local:DataView
+            x:Name="dataGridMainWindow"
+            Grid.Row="1"
+            Grid.Column="1"
+            Grid.RowSpan="3">
+            
+        </local:DataView>
         <Button Content="search" 
                 Grid.Column="1" 
                 x:Name="searchBtn"

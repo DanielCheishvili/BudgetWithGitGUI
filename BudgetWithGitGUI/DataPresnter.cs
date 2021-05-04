@@ -11,13 +11,14 @@ namespace BudgetWithGitGUI
     {
         public IDataView IView;
         public HomeBudget homeBudget;
-       // public MainWindow main;
+        public MainWindow main;
 
         
 
-        public DataPresenter(IDataView IView)
+        public DataPresenter(MainWindow mainWindow)
         {
-            this.IView = IView;
+            this.main = mainWindow;
+            //this.IView = IView;
             //this.main = IView as MainWindow;
             homeBudget = new HomeBudget("F:/Winter_2021/App_dev/Assignments/DemoForClass.db");
             //homeBudget = new HomeBudget(main.FileNamePresenter);
@@ -51,12 +52,10 @@ namespace BudgetWithGitGUI
         {
 
             
-            if(!isMonthChecked && !isCategoryChecked)
-            {
-                IView.CreateDefaultDataGrid();
-                List<BudgetItem> bi = HomeBudget.GetBudgetItems(startDate, endDate, filterFlag, id);
-                DataSource = bi.Cast<object>().ToList();
-            }
+            
+            IView.CreateDefaultDataGrid();
+            List<BudgetItem> budgetItems = HomeBudget.GetBudgetItems(startDate, endDate, filterFlag, id);
+            DataSource = budgetItems.Cast<object>().ToList();           
 
             if (isMonthChecked && isCategoryChecked)
             {
