@@ -24,15 +24,43 @@ namespace BudgetWithGitGUI
         public DataView()
         {
             InitializeComponent();
+            InitializeStandardDisplay();
         }
+        public DataPresenter presenter;
+        public List<Object> dataSource;
+        
+
 
         public HomeBudget homeBudget_;
-        public DataPresenter presnter { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public List<object> DataSource { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public void CreateDefaultDataGrid()
+        public DataPresenter presnter 
+        { 
+            get
+            {
+                return presenter;
+            }
+            set
+            {
+                presenter = value;
+            }
+        }
+        public List<object> DataSource
         {
+            get
+            {
+                return dataGrid.ItemsSource.Cast<object>().ToList();
+            }
+            set
+            {
 
+                dataGrid.ItemsSource = value;
+            }
+        }
+
+        DataPresenter IDataView.presenter { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public void InitializeStandardDisplay()
+        {
+           
             dataGrid.Columns.Clear();
             DataGridTextColumn column = new DataGridTextColumn();
             column.Header = "Date";
@@ -65,9 +93,10 @@ namespace BudgetWithGitGUI
             column.Binding.StringFormat = "F2";
             column.CellStyle = style;
             dataGrid.Columns.Add(column);
+            
 
         }
-        public void CreateSummaryByMonthGrid()
+        public void InitializeByMonthDisplay()
         {
             dataGrid.Columns.Clear();
             DataGridTextColumn column = new DataGridTextColumn();
@@ -85,7 +114,7 @@ namespace BudgetWithGitGUI
             column.CellStyle = style;
             dataGrid.Columns.Add(column);
         }
-        public void CreateSummaryByCategoryGrid()
+        public void InitializeByCategoryDisplay()
         {
             dataGrid.Columns.Clear();
             DataGridTextColumn column = new DataGridTextColumn();
@@ -102,7 +131,7 @@ namespace BudgetWithGitGUI
             column.CellStyle = style;
             dataGrid.Columns.Add(column);
         }
-        public void CreateSummaryByCategoryAndMonthGrid()
+        public void InitializeByCategoryAndMonthDisplay(List<string> usedList)
         {
             dataGrid.Columns.Clear();
             DataGridTextColumn column = new DataGridTextColumn();
@@ -111,11 +140,11 @@ namespace BudgetWithGitGUI
             column.Binding.StringFormat = "yyyy-MM";
             dataGrid.Columns.Add(column);
 
-            foreach (Category category in homeBudget_.categories.List())
+            foreach (String category in usedList)
             {
                 column = new DataGridTextColumn();
-                column.Header = category.Description;
-                column.Binding = new Binding("[" + category.Description + "]");
+                column.Header = category;
+                column.Binding = new Binding("[" + category + "]");
                 Style style = new Style();
                 style.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Right));
                 column.CellStyle = style;
@@ -132,20 +161,40 @@ namespace BudgetWithGitGUI
 
         }
 
+        //ask
         public void DataClear()
         {
             throw new NotImplementedException();
         }
 
-        public void ResetFocus(int itemIndex)
+        public void ResetFocusAfterUpdate(int itemIndex)
         {
             throw new NotImplementedException();
         }
 
         public void SearchInDataGrid()
         {
-            throw new NotImplementedException();
+            presenter.SearchInDataGrid();
         }
 
+        private void dataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            presenter.Modify();
+        }
+
+        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private void modifySelect_Click(object sender, RoutedEventArgs e)
+        {
+            presenter.Modify();
+        }
+
+        private void DeleteSelect_Click(object sender, RoutedEventArgs e)
+        {
+            presenter.Delete();
+        }
     }
 }

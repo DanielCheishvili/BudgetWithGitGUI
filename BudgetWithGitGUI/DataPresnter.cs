@@ -9,19 +9,17 @@ namespace BudgetWithGitGUI
 {
     public class DataPresenter
     {
-        public IDataView IView;
+        public DataView IView;
         public HomeBudget homeBudget;
         public MainWindow main;
 
         
 
-        public DataPresenter(MainWindow mainWindow)
+        public DataPresenter(MainWindow mainWindow, DataView dataView)
         {
+            this.IView = dataView;
             this.main = mainWindow;
-            //this.IView = IView;
-            //this.main = IView as MainWindow;
             homeBudget = new HomeBudget("F:/Winter_2021/App_dev/Assignments/DemoForClass.db");
-            //homeBudget = new HomeBudget(main.FileNamePresenter);
         }
 
         public HomeBudget HomeBudget
@@ -49,38 +47,52 @@ namespace BudgetWithGitGUI
         //loop over the list of categories and pass it in
 
         public void FiltersHaveChanged(DateTime? startDate, DateTime? endDate, bool filterFlag, int id, bool isMonthChecked,bool isCategoryChecked)
-        {
-
-            
-            
-            IView.CreateDefaultDataGrid();
+        {                    
+            IView.InitializeStandardDisplay();
             List<BudgetItem> budgetItems = HomeBudget.GetBudgetItems(startDate, endDate, filterFlag, id);
             DataSource = budgetItems.Cast<object>().ToList();           
 
             if (isMonthChecked && isCategoryChecked)
             {
-                IView.CreateSummaryByCategoryAndMonthGrid();
+                List<string> usedList = new List<string>();
+
+                foreach(Category category in homeBudget.categories.List())
+                {
+                    usedList.Add(category.Description);
+                }
+                IView.InitializeByCategoryAndMonthDisplay(usedList);
                 var bi = HomeBudget.GetBudgetDictionaryByCategoryAndMonth(startDate, endDate, filterFlag, id);
                 DataSource = bi.Cast<object>().ToList();
             }
             else if (isMonthChecked && !isCategoryChecked)
             {
-                IView.CreateSummaryByMonthGrid();
+                IView.InitializeByMonthDisplay();
                 List<BudgetItemsByMonth> bi = HomeBudget.GetBudgetItemsByMonth(startDate, endDate, filterFlag, id);
                 DataSource = bi.Cast<object>().ToList();
 
             }
             else if(isCategoryChecked && !isMonthChecked)
             {
-                IView.CreateSummaryByCategoryGrid();
+                IView.InitializeByCategoryDisplay();
                 List<BudgetItemsByCategory> bi = HomeBudget.GetBudgetItemsByCategory(startDate, endDate, filterFlag, id);
                 DataSource = bi.Cast<object>().ToList();
             }
             
-            
-            
-
         }
+        public void Modify()
+        {
+            main.ModifyExpenseForm();
+        }
+        public void Delete()
+        {
+         
+            main.DeleteItem();
+        }
+        public void SearchInDataGrid()
+        {
+            main.SearchInDataGrid();
+        }
+       
 
 
     }
