@@ -34,9 +34,7 @@ namespace BudgetWithGitGUI
             dataGridMainWindow.contextMenu.IsEnabled = false;
             searchBox.IsEnabled = false;
             searchBtn.IsEnabled = false;
-            datagridView = dataGridMainWindow;
-            presenter = new DataPresenter(this, datagridView);
-            datagridView.presnter = presnter;
+           
 
 
         }
@@ -99,7 +97,7 @@ namespace BudgetWithGitGUI
                 
                 fileName.Text = openFile.SafeFileName;
                 FileNamePresenter = fileName.Text;
-
+                
                 //adds the categories to the drop down menu.
                 categoryDropDownList.ItemsSource = _homeBudget.categories.List();
             }
@@ -115,6 +113,11 @@ namespace BudgetWithGitGUI
             dataGridMainWindow.contextMenu.IsEnabled = true;
             searchBox.IsEnabled = true;
             searchBtn.IsEnabled = true;
+
+            datagridView = dataGridMainWindow;
+            presenter = new DataPresenter(_homeBudget, datagridView);
+            datagridView.presnter = presnter;
+            presenter.main = this;
 
             presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, -1, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
 
