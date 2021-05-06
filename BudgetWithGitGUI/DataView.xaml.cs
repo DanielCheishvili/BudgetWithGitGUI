@@ -21,6 +21,7 @@ namespace BudgetWithGitGUI
     /// </summary>
     public partial class DataView : UserControl, IDataView
     {
+        public int currentIndex;
         public DataView()
         {
             InitializeComponent();
@@ -29,7 +30,17 @@ namespace BudgetWithGitGUI
         public DataPresenter presenter;
         public List<Object> dataSource;
         
-
+        public int CurrentIndex
+        {
+            get
+            {
+                return dataGrid.SelectedIndex;
+            }
+            set
+            {
+                currentIndex = value;
+            }
+        }
 
         public HomeBudget homeBudget_;
         public DataPresenter presnter 
@@ -184,7 +195,7 @@ namespace BudgetWithGitGUI
 
         private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            CurrentIndex = dataGrid.SelectedIndex;
         }
 
         private void modifySelect_Click(object sender, RoutedEventArgs e)

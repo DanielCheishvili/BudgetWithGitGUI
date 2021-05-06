@@ -16,12 +16,8 @@ namespace BudgetWithGitGUI
     public partial class MainWindow : Window
     {
         private HomeBudget _homeBudget;
-        private int currentIndex;
         private DataPresenter presenter;
-        public string fileNamePresenter;
         public DataView datagridView;
-
-        //make a getter for filename. public, call it datapresenter
         public MainWindow()
         {
             InitializeComponent();
@@ -34,20 +30,6 @@ namespace BudgetWithGitGUI
             dataGridMainWindow.contextMenu.IsEnabled = false;
             searchBox.IsEnabled = false;
             searchBtn.IsEnabled = false;
-           
-
-
-        }
-        public string FileNamePresenter
-        {
-            get
-            {
-                return fileNamePresenter;
-            }
-            set
-            {
-                fileNamePresenter = value;
-            }
         }
         public HomeBudget homeBudget_
         {
@@ -95,8 +77,8 @@ namespace BudgetWithGitGUI
                 //opens the database file.
                 _homeBudget = new HomeBudget(openFile.FileName, false);
                 
-                fileName.Text = openFile.SafeFileName;
-                FileNamePresenter = fileName.Text;
+                fileName.Text = "Using File: " + openFile.SafeFileName;
+                
                 
                 //adds the categories to the drop down menu.
                 categoryDropDownList.ItemsSource = _homeBudget.categories.List();
@@ -173,7 +155,11 @@ namespace BudgetWithGitGUI
         private void FilterAndSummaryCheck_Checked(object sender, RoutedEventArgs e)
         {
             bool filterFlag = false;
-
+            int id = -1;
+            if (categoryDropDownList.SelectedIndex > -1)
+            {
+                id = ((Category)categoryDropDownList.SelectedItem).Id;
+            }
             if (filterByCategoryCB.IsChecked == true)
             {
                 filterFlag = true;
@@ -202,7 +188,7 @@ namespace BudgetWithGitGUI
                 MessageBox.Show("The end date cannot be earlier than the start date", "Date Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
             }
-            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, -1, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
+            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterFlag, id, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
         }
 
 
@@ -218,7 +204,6 @@ namespace BudgetWithGitGUI
 
         }
 
-        //BUG: after re checking the 
         private void categoryDropDownList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int id = -1;
@@ -231,20 +216,6 @@ namespace BudgetWithGitGUI
 
         }
 
-        private void dataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (byCategoryCB.IsChecked == true || byMonthCB.IsChecked == true)
-            {
-                e.Handled = false;
-            }
-            else
-            {
-                e.Handled = true;
-                ModifyExpenseForm();
-            }
-
-
-        }
         public void DeleteItem()
         {
             BudgetItem item = dataGridMainWindow.dataGrid.SelectedItem as BudgetItem;
@@ -256,19 +227,18 @@ namespace BudgetWithGitGUI
         }
         private void searchBtn_Click(object sender, RoutedEventArgs e)
         {
+           
             SearchInDataGrid();
+            
         }
         private void searchBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
+            
+            
             if (dataGridMainWindow.dataGrid.SelectedItem != null)
-                currentIndex = dataGridMainWindow.dataGrid.SelectedIndex;
+                dataGridMainWindow.currentIndex = dataGridMainWindow.dataGrid.SelectedIndex;
             else
-                currentIndex = 0;
-        }
-        //BUG HERE
-        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            currentIndex = dataGridMainWindow.dataGrid.SelectedIndex;
+                dataGridMainWindow.currentIndex = 0;
         }
         #endregion
 
@@ -301,7 +271,7 @@ namespace BudgetWithGitGUI
             int count = 0;
 
             //iterates through all the data grid items
-            for (int i = currentIndex; i < dataGridMainWindow.dataGrid.Items.Count; i++)
+            for (int i = dataGridMainWindow.currentIndex; i < dataGridMainWindow.dataGrid.Items.Count; i++)
             {
 
                 BudgetItem item = dataGridMainWindow.dataGrid.Items.GetItemAt(i) as BudgetItem;
@@ -316,12 +286,12 @@ namespace BudgetWithGitGUI
 
                     //assigns the last value so next time the method is called
                     //the loop starts on the index after the previous found one.
-                    currentIndex = ++i;
+                    dataGridMainWindow.currentIndex = ++i;
 
                     //if the next index is out of bounds resets to 0
-                    if (currentIndex == dataGridMainWindow.dataGrid.Items.Count)
+                    if (dataGridMainWindow.currentIndex == dataGridMainWindow.dataGrid.Items.Count)
                     {
-                        currentIndex = 0;
+                        dataGridMainWindow.currentIndex = 0;
                     }
                     return;
                 }
