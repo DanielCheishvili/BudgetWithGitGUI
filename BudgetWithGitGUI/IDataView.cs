@@ -8,16 +8,14 @@ namespace BudgetWithGitGUI
 {
     public interface IDataView
     {
-        DataPresenter presnter { get; set; }
-
-        List<Object> DataSource { get; set; }
-        void ResetFocus(int itemIndex);
+        DataPresenter presenter { get; set; }
+        List<object> DataSource { get; set; }
+        void ResetFocusAfterUpdate(int itemIndex);
         void DataClear();
-        void CreateDefaultDataGrid();
-        void CreateSummaryByMonthGrid();
-        void CreateSummaryByCategoryGrid();
-        void CreateSummaryByCategoryAndMonthGrid();
-        void SearchInDataGrid();
+        void InitializeStandardDisplay();
+        void InitializeByMonthDisplay();
+        void InitializeByCategoryDisplay();
+        void InitializeByCategoryAndMonthDisplay(List<String> usedCategoryList);
 
     }
 }
