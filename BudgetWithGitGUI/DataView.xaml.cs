@@ -21,13 +21,37 @@ namespace BudgetWithGitGUI
     /// </summary>
     public partial class DataView : UserControl, IDataView
     {
+        public int SelectedIndex { get { return dataGrid.SelectedIndex; } set { dataGrid.SelectedIndex = value; } }
+        public object SelectedItem { get { return dataGrid.SelectedItem; } set { dataGrid.SelectedItem = value; } }
         public int currentIndex;
+        public bool ContextMenuEnabled
+        {
+            get { return contextMenu.IsEnabled; }
+            set { contextMenu.IsEnabled = value; }
+        }
+
+        //sandys code
+        public void ResetFocus(int index)
+        {
+            if (index >= dataGrid.Items.Count || index < 0)
+            {
+                index = dataGrid.Items.Count - 1;
+            }
+            dataGrid.SelectedIndex = index;
+            dataGrid.Focus();
+
+            if (index != -1)
+            {
+                dataGrid.CurrentCell = new DataGridCellInfo(dataGrid.Items[index], dataGrid.Columns[0]);
+                dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+            }
+        }
+
         public DataView()
         {
             InitializeComponent();
             InitializeStandardDisplay();
         }
-        public DataPresenter presenter;
         public List<Object> dataSource;
         
         public int CurrentIndex
@@ -43,17 +67,7 @@ namespace BudgetWithGitGUI
         }
 
         public HomeBudget homeBudget_;
-        public DataPresenter presnter 
-        { 
-            get
-            {
-                return presenter;
-            }
-            set
-            {
-                presenter = value;
-            }
-        }
+        public DataPresenter presenter { get; set; }
         public List<object> DataSource
         {
             get
@@ -67,7 +81,6 @@ namespace BudgetWithGitGUI
             }
         }
 
-        DataPresenter IDataView.presenter { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public void InitializeStandardDisplay()
         {

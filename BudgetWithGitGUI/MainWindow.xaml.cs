@@ -17,17 +17,17 @@ namespace BudgetWithGitGUI
     {
         private HomeBudget _homeBudget;
         private DataPresenter presenter;
-        public DataView datagridView;
+        public IDataView datagridView;
         public MainWindow()
         {
             InitializeComponent();
-
+            datagridView = (IDataView) dataGridMainWindow;
             addCategory.IsEnabled = false;
             addExpense.IsEnabled = false;
             filterGB.IsEnabled = false;
             summaryGB.IsEnabled = false;
             fileName.Visibility = Visibility.Hidden;
-            dataGridMainWindow.contextMenu.IsEnabled = false;
+            datagridView.ContextMenuEnabled = false;
             searchBox.IsEnabled = false;
             searchBtn.IsEnabled = false;
         }
@@ -92,13 +92,12 @@ namespace BudgetWithGitGUI
             filterGB.IsEnabled = true;
             summaryGB.IsEnabled = true;
             fileName.Visibility = Visibility.Visible;
-            dataGridMainWindow.contextMenu.IsEnabled = true;
+            datagridView.ContextMenuEnabled = true;
             searchBox.IsEnabled = true;
             searchBtn.IsEnabled = true;
 
-            datagridView = dataGridMainWindow;
             presenter = new DataPresenter(_homeBudget, datagridView);
-            datagridView.presnter = presnter;
+            datagridView.presenter = presnter;
             presenter.main = this;
 
             presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, -1, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
@@ -115,7 +114,7 @@ namespace BudgetWithGitGUI
             ExpenseWindow newExpWindow = new ExpenseWindow(homeBudget_, false, -1);
             newExpWindow.ShowDialog();
             presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, -1, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
-            ResetFocus(dataGridMainWindow.dataGrid.Items.Count - 1);
+            dataGridMainWindow.ResetFocus(dataGridMainWindow.DataSource.Count - 1);
         }
 
 
@@ -168,8 +167,7 @@ namespace BudgetWithGitGUI
             }
             if (byCategoryCB.IsChecked == true || byMonthCB.IsChecked == true)
             {
-                dataGridMainWindow.modifySelect.IsEnabled = false;
-                dataGridMainWindow.DeleteSelect.IsEnabled = false;
+                dataGridMainWindow.ContextMenuEnabled = false;
                 searchBox.IsEnabled = false;
                 searchBtn.IsEnabled = false;
 
@@ -177,8 +175,7 @@ namespace BudgetWithGitGUI
             }
             else
             {
-                dataGridMainWindow.modifySelect.IsEnabled = true;
-                dataGridMainWindow.DeleteSelect.IsEnabled = true;
+                dataGridMainWindow.ContextMenuEnabled = true;
                 searchBox.IsEnabled = true;
                 searchBtn.IsEnabled = true;
             }
@@ -218,12 +215,12 @@ namespace BudgetWithGitGUI
 
         public void DeleteItem()
         {
-            BudgetItem item = dataGridMainWindow.dataGrid.SelectedItem as BudgetItem;
-            int temp = dataGridMainWindow.dataGrid.SelectedIndex;
+            BudgetItem item = dataGridMainWindow.SelectedItem as BudgetItem;
+            int temp = dataGridMainWindow.SelectedIndex;
             ExpenseWindow modifyWin = new ExpenseWindow(homeBudget_, false, item.ExpenseID);
             homeBudget_.expenses.Delete(item.ExpenseID);
-            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, dataGridMainWindow.dataGrid.SelectedIndex, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
-            ResetFocus(temp);
+            presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, dataGridMainWindow.SelectedIndex, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
+            dataGridMainWindow.ResetFocus(temp);
         }
         private void searchBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -235,10 +232,10 @@ namespace BudgetWithGitGUI
         {
             
             
-            if (dataGridMainWindow.dataGrid.SelectedItem != null)
-                dataGridMainWindow.currentIndex = dataGridMainWindow.dataGrid.SelectedIndex;
+            if (dataGridMainWindow.SelectedItem != null)
+                dataGridMainWindow.CurrentIndex = dataGridMainWindow.SelectedIndex;
             else
-                dataGridMainWindow.currentIndex = 0;
+                dataGridMainWindow.CurrentIndex = 0;
         }
         #endregion
 
@@ -246,7 +243,7 @@ namespace BudgetWithGitGUI
         public void ModifyExpenseForm()
         {
 
-            BudgetItem item = dataGridMainWindow.dataGrid.SelectedItem as BudgetItem;
+            BudgetItem item = dataGridMainWindow.SelectedItem as BudgetItem;
 
             if (item != null)
             {
@@ -256,7 +253,7 @@ namespace BudgetWithGitGUI
                 modifyWin.amountText.Text = item.Amount.ToString();
                 modifyWin.descriptionText.Text = item.ShortDescription;
                 modifyWin.ShowDialog();
-                presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, dataGridMainWindow.dataGrid.SelectedIndex, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
+                presenter.FiltersHaveChanged(startDatePicker.SelectedDate, endDatePicker.SelectedDate, filterByCategoryCB.IsChecked == true, dataGridMainWindow.SelectedIndex, byMonthCB.IsChecked == true, byCategoryCB.IsChecked == true);
 
             }
             else
@@ -271,32 +268,31 @@ namespace BudgetWithGitGUI
             int count = 0;
 
             //iterates through all the data grid items
-            for (int i = dataGridMainWindow.currentIndex; i < dataGridMainWindow.dataGrid.Items.Count; i++)
+            for (int i = dataGridMainWindow.CurrentIndex; i < dataGridMainWindow.DataSource.Count; i++)
             {
 
-                BudgetItem item = dataGridMainWindow.dataGrid.Items.GetItemAt(i) as BudgetItem;
-                dataGridMainWindow.dataGrid.SelectedItem = item;
+                BudgetItem item = dataGridMainWindow.DataSource[i] as BudgetItem;
+                dataGridMainWindow.SelectedItem = item;
 
                 //if the string matches the description or the amount of current budget item then it
                 //highlights it and scrolls into view
                 if (item.ShortDescription.ToLower().Contains(searchBox.Text.ToLower()) || item.Amount.ToString("F").Contains(searchBox.Text))
                 {
-                    dataGridMainWindow.dataGrid.Focus();
-                    dataGridMainWindow.dataGrid.ScrollIntoView(dataGridMainWindow.dataGrid.SelectedItem);
+                    dataGridMainWindow.ResetFocus(i);
 
                     //assigns the last value so next time the method is called
                     //the loop starts on the index after the previous found one.
-                    dataGridMainWindow.currentIndex = ++i;
+                    dataGridMainWindow.CurrentIndex = ++i;
 
                     //if the next index is out of bounds resets to 0
-                    if (dataGridMainWindow.currentIndex == dataGridMainWindow.dataGrid.Items.Count)
+                    if (dataGridMainWindow.CurrentIndex == dataGridMainWindow.DataSource.Count)
                     {
-                        dataGridMainWindow.currentIndex = 0;
+                        dataGridMainWindow.CurrentIndex = 0;
                     }
                     return;
                 }
                 //if the loop iterates through the entire datagrid and doesnt find a match
-                else if (count == dataGridMainWindow.dataGrid.Items.Count)
+                else if (count == dataGridMainWindow.DataSource.Count)
                 {
                     MessageBox.Show("The Item you are looking for cannot be found", "Search not found", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -305,7 +301,7 @@ namespace BudgetWithGitGUI
 
                 //if it reaches the end the it resets the index to -1 because in the for loop
                 //it does the i++ after therefore if its = to 0 then it would be actually = to 1
-                if (i + 1 == dataGridMainWindow.dataGrid.Items.Count)
+                if (i + 1 == dataGridMainWindow.DataSource.Count)
                 {
                     i = -1;
                 }
@@ -315,22 +311,6 @@ namespace BudgetWithGitGUI
 
         }
 
-        //sandys code
-        public void ResetFocus(int index)
-        {
-            if (index >= dataGridMainWindow.dataGrid.Items.Count || index < 0)
-            {
-                index = dataGridMainWindow.dataGrid.Items.Count - 1;
-            }
-            dataGridMainWindow.dataGrid.SelectedIndex = index;
-            dataGridMainWindow.dataGrid.Focus();
-
-            if (index != -1)
-            {
-                dataGridMainWindow.dataGrid.CurrentCell = new DataGridCellInfo(dataGridMainWindow.dataGrid.Items[index], dataGridMainWindow.dataGrid.Columns[0]);
-                dataGridMainWindow.dataGrid.ScrollIntoView(dataGridMainWindow.dataGrid.SelectedItem);
-            }
-        }
         #endregion
     }
 }

@@ -33,13 +33,13 @@
             </Border.Background>
         </Border>
 
-        <local:DataView
+        <local:DataChartControl
             x:Name="dataGridMainWindow"
             Grid.Row="1"
             Grid.Column="1"
             Grid.RowSpan="3">
             
-        </local:DataView>
+        </local:DataChartControl>
         <Button Content="search" 
                 Grid.Column="1" 
                 x:Name="searchBtn"
